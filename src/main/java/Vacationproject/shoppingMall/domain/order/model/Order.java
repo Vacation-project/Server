@@ -1,5 +1,6 @@
 package Vacationproject.shoppingMall.domain.order.model;
 
+import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.orderProduct.model.OrderProduct;
 import Vacationproject.shoppingMall.domain.user.model.User;
 import jakarta.persistence.*;
@@ -15,14 +16,12 @@ import java.util.List;
 @Getter
 @Table(name = "orders") //order는 예약어로 지정되어 있을수가 있기 때문에 관례로 orders로 해준다.
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long id;
-
-    private LocalDateTime orderDate; //TODO TimeEntity를 만들어서 자동화
 
     private int totalPrice;
 

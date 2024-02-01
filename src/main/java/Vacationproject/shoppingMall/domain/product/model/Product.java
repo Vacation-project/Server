@@ -1,5 +1,6 @@
 package Vacationproject.shoppingMall.domain.product.model;
 
+import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.cart.model.Cart;
 import Vacationproject.shoppingMall.domain.favorite.model.Favorite;
 import Vacationproject.shoppingMall.domain.review.model.Review;
@@ -19,7 +20,7 @@ import static jakarta.persistence.FetchType.*;
 @Entity
 @Table(name = "product")
 @NoArgsConstructor
-public class Product {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,11 +35,9 @@ public class Product {
 
     private int content; //상품 설명
 
-    private LocalDateTime createTime; // 상품 업로드 시간
-
     private String dType; // 상품 구분 타입 TODO Category와 Product를 oneToMany로 변경하면 필요 없음
 
-    private String imagePath; // 상품 이미지 url
+    private String imagePath; // 상품 이미지 url //TODO ProductImage Entity를 생성해서 대체
 
     private String imageName; // 삭제 예정
 

@@ -1,5 +1,6 @@
 package Vacationproject.shoppingMall.domain.review.model;
 
+import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.user.model.User;
 import jakarta.persistence.*;
@@ -17,7 +18,7 @@ import static jakarta.persistence.FetchType.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Review {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +30,6 @@ public class Review {
     private String comment; // 후기 내용
 
     private int rating; // 평점
-
-    private LocalDateTime reviewDate; // 후기 작성 시간
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_id")

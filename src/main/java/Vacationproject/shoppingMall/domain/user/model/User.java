@@ -1,5 +1,6 @@
 package Vacationproject.shoppingMall.domain.user.model;
 
+import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.cart.model.Cart;
 import Vacationproject.shoppingMall.domain.embeddable.Address;
 import Vacationproject.shoppingMall.domain.review.model.Review;
@@ -16,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
