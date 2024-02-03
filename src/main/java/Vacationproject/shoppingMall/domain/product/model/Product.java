@@ -1,11 +1,14 @@
 package Vacationproject.shoppingMall.domain.product.model;
 
+import Vacationproject.shoppingMall.common.constant.ConstraintConstants;
 import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.cart.model.Cart;
 import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.favorite.model.Favorite;
 import Vacationproject.shoppingMall.domain.review.model.Review;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +16,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Vacationproject.shoppingMall.common.constant.ConstraintConstants.*;
 import static jakarta.persistence.FetchType.*;
 
 @Getter
@@ -25,15 +29,21 @@ public class Product extends BaseEntity {
     @Column(name = "product_id")
     private Long id;
 
+    @NotNull
     private String name;
 
+    @NotNull
+    @Size(min = PRODUCT_PRICE_MIN)
     private int price; // double이었으나, int로 수정
 
+    @NotNull
+    @Size(min = PRODUCT_QUANTITY_MIN_SIZE)
     private int stockQuantity; // 상품 재고수량
 
     private int content; //상품 설명
 
-    private String imageUrl; // 상품 이미지 url
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductImage> productImageList = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "cart_id")
@@ -44,9 +54,6 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Favorite> favoriteList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductImage> productImageList = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "categoty_id")
