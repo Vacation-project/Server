@@ -1,45 +1,34 @@
 package Vacationproject.shoppingMall.domain.product.api;
 
-import Vacationproject.shoppingMall.domain.product.model.Product;
-import Vacationproject.shoppingMall.domain.product.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-/**
- * 전부 다 수정
- */
 @RestController
 @RequestMapping("/api/products")
+@RequiredArgsConstructor
 public class ProductApiController {
+    /**
+     * 상품 생성
+     */
 
-    private final ProductService productService;
+    /**
+     * 상품 상세 페이지
+     */
 
-    @Autowired
-    public ProductApiController(ProductService productService) {
-        this.productService = productService;
-    }
+    /**
+     * 상품 수정
+     */
 
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.findAllProducts();
-    }
+    /**
+     * 상품 삭제
+     */
 
-    @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        return productService.findProductById(id);
-    }
+    /**
+     * 검색 결과에 따른 상품 리스트
+     */
 
-    @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
-    }
+    /**
+     * 카테고리별 상품 목 조회
+     */
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.ok().build();
-    }
 }
