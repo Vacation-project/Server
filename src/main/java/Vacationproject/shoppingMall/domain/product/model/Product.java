@@ -2,9 +2,11 @@ package Vacationproject.shoppingMall.domain.product.model;
 
 import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.cart.model.Cart;
+import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.favorite.model.Favorite;
 import Vacationproject.shoppingMall.domain.review.model.Review;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,8 +17,7 @@ import static jakarta.persistence.FetchType.*;
 
 @Getter
 @Entity
-@Table(name = "product")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product extends BaseEntity {
 
     @Id
@@ -32,11 +33,7 @@ public class Product extends BaseEntity {
 
     private int content; //상품 설명
 
-    private String dType; // 상품 구분 타입 TODO Category와 Product를 oneToMany로 변경하면 필요 없음
-
-    private String imagePath; // 상품 이미지 url //TODO ProductImage Entity를 생성해서 대체
-
-    private String imageName; // 삭제 예정
+    private String imageUrl; // 상품 이미지 url
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "cart_id")
@@ -50,4 +47,8 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> productImageList = new ArrayList<>();
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "categoty_id")
+    private Category category;
 }

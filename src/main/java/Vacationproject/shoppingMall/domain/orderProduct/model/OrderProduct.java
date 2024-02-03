@@ -2,6 +2,7 @@ package Vacationproject.shoppingMall.domain.orderProduct.model;
 
 import Vacationproject.shoppingMall.domain.order.model.Order;
 import Vacationproject.shoppingMall.domain.product.model.Product;
+import Vacationproject.shoppingMall.domain.product.model.ProductImage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -35,6 +36,5 @@ public class OrderProduct {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_id")
-    @JsonIgnore // 왜 추가했는지 질문
     private Product product;
 }

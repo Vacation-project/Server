@@ -1,10 +1,14 @@
 package Vacationproject.shoppingMall.domain.category.model;
 
+import Vacationproject.shoppingMall.domain.product.model.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -16,7 +20,6 @@ public class Category {
     @Column(name = "category_id")
     private Long id;
 
-    //@Enumerated(EnumType.STRING)
-    //private CategoryName categoryName; // Enum 타입
-
+    @OneToMany(cascade = CascadeType.ALL) // 해당 카테고리가 삭제된다면 그에 관련된 모든 상품이 삭제
+    private List<Product> productList = new ArrayList<>();
 }
