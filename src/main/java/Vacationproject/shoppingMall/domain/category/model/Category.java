@@ -20,6 +20,8 @@ public class Category {
     @Column(name = "category_id")
     private Long id;
 
+    private String name;
+
     @OneToMany(cascade = CascadeType.ALL) // 해당 카테고리가 삭제된다면 그에 관련된 모든 상품이 삭제
     private List<Product> productList = new ArrayList<>();
 }
