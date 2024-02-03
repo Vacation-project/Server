@@ -50,4 +50,7 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Favorite> favoriteList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductImage> productImageList = new ArrayList<>();
 }
