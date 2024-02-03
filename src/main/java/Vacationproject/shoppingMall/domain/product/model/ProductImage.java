@@ -31,8 +31,6 @@ public class ProductImage {
                 .imageUrl(imageUrl)
                 .build();
 
-        product.getProductImageList().add(productImage); //연관관계 설정
-
         return productImage;
     }
 }

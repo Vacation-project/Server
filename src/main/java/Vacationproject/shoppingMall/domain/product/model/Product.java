@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,7 +41,7 @@ public class Product extends BaseEntity {
     @Size(min = PRODUCT_QUANTITY_MIN_SIZE)
     private int stockQuantity; // 상품 재고수량
 
-    private int content; //상품 설명
+    private String content; //상품 설명
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> productImageList = new ArrayList<>();
@@ -58,4 +59,25 @@ public class Product extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "categoty_id")
     private Category category;
+
+    @Builder
+    public Product(Long id,
+                   String name,
+                   int price,
+                   int stockQuantity,
+                   String content,
+                   Category category)
+    {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.content = content;
+        this.category = category;
+    }
+
+    /* 연관관계 메서드 */
+    public void addProductImage(ProductImage productImage) {
+        productImageList.add(productImage);
+    }
 }
