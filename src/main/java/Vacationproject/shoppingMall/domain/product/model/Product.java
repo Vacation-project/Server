@@ -16,7 +16,6 @@ import java.util.List;
 import static jakarta.persistence.FetchType.*;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "product")
 @NoArgsConstructor
