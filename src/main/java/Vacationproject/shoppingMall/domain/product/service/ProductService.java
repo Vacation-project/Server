@@ -22,6 +22,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     // 상품 생성
     public void createProduct(CreateProductRequest createProductRequest, Long categoryId) {
         //TODO 추후 통합 예외 생성 후 변경 예정
