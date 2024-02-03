@@ -28,7 +28,7 @@ public class ProductApiController {
      */
 
     /**
-     * 카테고리별 상품 목 조회
+     * 카테고리별 상품 목록 조회
      */
 
 }
