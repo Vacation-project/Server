@@ -2,6 +2,8 @@ package Vacationproject.shoppingMall.domain.category.model;
 
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ public class Category {
     @Column(name = "category_id")
     private Long id;
 
+    @NotBlank
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL) // 해당 카테고리가 삭제된다면 그에 관련된 모든 상품이 삭제
