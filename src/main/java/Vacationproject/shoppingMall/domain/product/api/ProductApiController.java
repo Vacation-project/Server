@@ -7,8 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import static Vacationproject.shoppingMall.common.dto.ApiResponse.success;
-import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.CreateProductRequest;
-import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.ProductMessage;
+import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 
 @RestController
 @RequestMapping("/api/products")
@@ -38,6 +37,28 @@ public class ProductApiController {
     /**
      * 상품 수정
      */
+    @GetMapping("/{productId}/admin")
+    public ApiResponse<ProductUpdateResponse> updateProductForm(
+            @PathVariable Long productId
+//            @AuthenticationPrincipal PrincipalDetails principalDetails
+    ) {
+        // authService.checkIsAdmin(principalDetails.getUser())
+        ProductUpdateResponse productUpdateResponse = productService.getProduct(productId);
+
+        return success(productUpdateResponse);
+    }
+
+    @PutMapping("/{productId}/admin")
+    public ApiResponse<ProductMessage> updateProduct(
+            @PathVariable Long productId,
+            @RequestBody @Valid UpdateProductRequest updateProductRequest
+//            @AuthenticationPrincipal PrincipalDetails principalDetails
+    ) {
+        // authService.checkIsAdmin(principalDetails.getUser())
+        ProductMessage message = productService.updateProduct(productId, updateProductRequest);
+
+        return success(message);
+    }
 
     /**
      * 상품 삭제
