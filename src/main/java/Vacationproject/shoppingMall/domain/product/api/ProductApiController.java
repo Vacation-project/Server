@@ -4,10 +4,7 @@ import Vacationproject.shoppingMall.common.dto.ApiResponse;
 import Vacationproject.shoppingMall.domain.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static Vacationproject.shoppingMall.common.dto.ApiResponse.success;
 import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.CreateProductRequest;
@@ -25,9 +22,9 @@ public class ProductApiController {
      * 만약 로그인 X or Admin X인 경우 예외 발생
      */
     @PostMapping("/{categoryId}/admin")
-    public ApiResponse<ProductMessage> createProduct(@Valid CreateProductRequest createProductRequest,
+    public ApiResponse<ProductMessage> createProduct(@Valid final CreateProductRequest createProductRequest,
 //                                     @AuthenticationPrincipal PrincipalDetails principalDetails,
-                                     @PathVariable Long categoryId) {
+                                     @PathVariable final Long categoryId) {
         /* 로그인한 유저가 어드민이 맞는지 검증 */
         // authService.checkIsAdmin(principalDetails.getUser())
         ProductMessage message = productService.createProduct(createProductRequest, categoryId);
@@ -45,6 +42,16 @@ public class ProductApiController {
     /**
      * 상품 삭제
      */
+    @DeleteMapping("/{productId}/admin")
+    public ApiResponse<ProductMessage> deleteProduct(
+            @PathVariable Long productId
+//            @AuthenticationPrincipal PrincipalDetails principalDetails
+    ) {
+        // authService.checkIsAdmin(principalDetails.getUser())
+        ProductMessage message = productService.deleteProduct(productId);
+
+        return success(message);
+    }
 
     /**
      * 검색 결과에 따른 상품 리스트
