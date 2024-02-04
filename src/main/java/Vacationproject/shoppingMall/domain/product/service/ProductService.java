@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.util.List;
+
 import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 
 @Service
@@ -20,15 +23,18 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ImageStore imageStore;
 
     @Transactional
     // 상품 생성
-    public ProductMessage createProduct(CreateProductRequest createProductRequest, Long categoryId) {
+    public ProductMessage createProduct(CreateProductRequest createProductRequest, Long categoryId) throws IOException {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
         Product product = productRepository.save(createProductRequest.toEntity(category));
 
-        createProductRequest.imageUrls().forEach(imageUrl ->
+        imageStore.storeFiles(createProductRequest.images()).forEach(imageUrl ->
                 product.addProductImage(ProductImage.of(product, imageUrl)));
+//        createProductRequest.imageUrls().forEach(imageUrl ->
+//                product.addProductImage(ProductImage.of(product, imageUrl)));
 
         return new ProductMessage(true);
     }
@@ -48,16 +54,18 @@ public class ProductService {
         return ProductUpdateResponse.of(product);
     }
 
-    public ProductMessage updateProduct(Long productId, UpdateProductRequest updateProduct) {
+    public ProductMessage updateProduct(Long productId, UpdateProductRequest updateProduct) throws IOException {
         Long categoryId = updateProduct.productCategoryId();
 
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
+        List<String> imageUrls = imageStore.storeFiles(updateProduct.images());
+
         /*Dirty Checking 발생*/
         product.update(
                 updateProduct,
-                updateProduct.imageUrls().stream().map(it -> ProductImage.of(product, it)).toList(),
+                imageUrls.stream().map(it -> ProductImage.of(product, it)).toList(),
                 category);
 
         return new ProductMessage(true);

@@ -7,6 +7,7 @@ import Vacationproject.shoppingMall.domain.product.model.ProductImage;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,7 +32,9 @@ public class ProductDto {
             @NotNull
             @Size(min = PRODUCT_CONTENT_MIN_SIZE)
             String content,
-            List<String> imageUrls //TODO image가 MutipartFile로 넘어오는게 맞는지, String으로 넘어와야 하는지 고민
+//            List<String> imageUrls //TODO image가 MutipartFile로 넘어오는게 맞는지, String으로 넘어와야 하는지 고민
+            @NotNull
+            List<MultipartFile> images
     ) {
         public Product toEntity(Category category) {
             return Product.builder()
@@ -58,8 +61,10 @@ public class ProductDto {
             @NotNull
             @Size(min = ConstraintConstants.PRODUCT_CONTENT_MIN_SIZE)
             String productComment,
+//            @NotNull
+//            List<String> imageUrls,
             @NotNull
-            List<String> imageUrls,
+            List<MultipartFile> images,
             @NotNull
             Long productCategoryId
     ) {

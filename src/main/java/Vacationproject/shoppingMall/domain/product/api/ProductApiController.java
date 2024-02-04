@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 import static Vacationproject.shoppingMall.common.dto.ApiResponse.success;
 import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 
@@ -21,11 +23,13 @@ public class ProductApiController {
      * 만약 로그인 X or Admin X인 경우 예외 발생
      */
     @PostMapping("/{categoryId}/admin")
-    public ApiResponse<ProductMessage> createProduct(@Valid final CreateProductRequest createProductRequest,
+    public ApiResponse<ProductMessage> createProduct(
+            @Valid final CreateProductRequest createProductRequest,
 //                                     @AuthenticationPrincipal PrincipalDetails principalDetails,
-                                     @PathVariable final Long categoryId) {
+            @PathVariable final Long categoryId) throws IOException {
         /* 로그인한 유저가 어드민이 맞는지 검증 */
         // authService.checkIsAdmin(principalDetails.getUser())
+
         ProductMessage message = productService.createProduct(createProductRequest, categoryId);
         return success(message);
     }
@@ -53,7 +57,7 @@ public class ProductApiController {
             @PathVariable Long productId,
             @RequestBody @Valid UpdateProductRequest updateProductRequest
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
-    ) {
+    ) throws IOException {
         // authService.checkIsAdmin(principalDetails.getUser())
         ProductMessage message = productService.updateProduct(productId, updateProductRequest);
 
