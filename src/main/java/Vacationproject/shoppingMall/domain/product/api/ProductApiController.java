@@ -4,11 +4,14 @@ import Vacationproject.shoppingMall.common.dto.ApiResponse;
 import Vacationproject.shoppingMall.domain.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import static Vacationproject.shoppingMall.common.dto.ApiResponse.*;
-import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
+import static Vacationproject.shoppingMall.common.dto.ApiResponse.success;
+import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.CreateProductRequest;
+import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.ProductMessage;
 
 @RestController
 @RequestMapping("/api/products")
@@ -21,14 +24,14 @@ public class ProductApiController {
      * TODO 회원 기능이 개발된다면 authService를 사용해서 현재 로그인 했는지, admin인지 검증 후 실행되도록 변경
      * 만약 로그인 X or Admin X인 경우 예외 발생
      */
-    @PostMapping("/admin/{categoryId}")
-    public ApiResponse createProduct(@Valid CreateProductRequest createProductRequest,
+    @PostMapping("/{categoryId}/admin")
+    public ApiResponse<ProductMessage> createProduct(@Valid CreateProductRequest createProductRequest,
 //                                     @AuthenticationPrincipal PrincipalDetails principalDetails,
                                      @PathVariable Long categoryId) {
         /* 로그인한 유저가 어드민이 맞는지 검증 */
         // authService.checkIsAdmin(principalDetails.getUser())
-        productService.createProduct(createProductRequest, categoryId);
-        return successWithNoContent();
+        ProductMessage message = productService.createProduct(createProductRequest, categoryId);
+        return success(message);
     }
 
     /**

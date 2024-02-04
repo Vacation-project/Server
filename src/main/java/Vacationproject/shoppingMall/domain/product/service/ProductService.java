@@ -2,7 +2,6 @@ package Vacationproject.shoppingMall.domain.product.service;
 
 import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.category.repository.CategoryRepository;
-import Vacationproject.shoppingMall.domain.product.dto.ProductDto;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
 import Vacationproject.shoppingMall.domain.product.repository.ProductRepository;
@@ -12,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
-import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
+import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.CreateProductRequest;
+import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.ProductMessage;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +24,14 @@ public class ProductService {
 
     @Transactional
     // 상품 생성
-    public void createProduct(CreateProductRequest createProductRequest, Long categoryId) {
+    public ProductMessage createProduct(CreateProductRequest createProductRequest, Long categoryId) {
         //TODO 추후 통합 예외 생성 후 변경 예정
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new NoSuchElementException());
         Product product = productRepository.save(createProductRequest.toEntity(category));
 
         createProductRequest.imageUrls().forEach(imageUrl ->
                 product.addProductImage(ProductImage.of(product, imageUrl)));
+
+        return new ProductMessage(true);
     }
 }
