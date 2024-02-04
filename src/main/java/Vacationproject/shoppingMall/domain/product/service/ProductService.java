@@ -25,7 +25,6 @@ public class ProductService {
     @Transactional
     // 상품 생성
     public ProductMessage createProduct(CreateProductRequest createProductRequest, Long categoryId) {
-        //TODO 추후 통합 예외 생성 후 변경 예정
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
         Product product = productRepository.save(createProductRequest.toEntity(category));
 
@@ -36,7 +35,6 @@ public class ProductService {
     }
 
     public ProductMessage deleteProduct(Long productId) {
-        //TODO 추후 통합 예외 생성 후 변경 예정
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
         productRepository.delete(product);
 

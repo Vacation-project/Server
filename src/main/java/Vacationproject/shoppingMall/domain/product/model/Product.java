@@ -1,6 +1,5 @@
 package Vacationproject.shoppingMall.domain.product.model;
 
-import Vacationproject.shoppingMall.common.constant.ConstraintConstants;
 import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.cart.model.Cart;
 import Vacationproject.shoppingMall.domain.category.model.Category;
@@ -10,15 +9,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static Vacationproject.shoppingMall.common.constant.ConstraintConstants.*;
-import static jakarta.persistence.FetchType.*;
+import static Vacationproject.shoppingMall.common.constant.ConstraintConstants.PRODUCT_PRICE_MIN;
+import static Vacationproject.shoppingMall.common.constant.ConstraintConstants.PRODUCT_QUANTITY_MIN_SIZE;
+import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
 @Entity
@@ -59,22 +58,6 @@ public class Product extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "categoty_id")
     private Category category;
-
-    @Builder
-    public Product(Long id,
-                   String name,
-                   int price,
-                   int stockQuantity,
-                   String content,
-                   Category category)
-    {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.stockQuantity = stockQuantity;
-        this.content = content;
-        this.category = category;
-    }
 
     /* 연관관계 메서드 */
     public void addProductImage(ProductImage productImage) {
