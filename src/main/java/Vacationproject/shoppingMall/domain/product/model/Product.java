@@ -35,11 +35,11 @@ public class Product extends BaseEntity {
     private String name;
 
     @NotNull
-    @Min(PRODUCT_PRICE_MIN)
+    @Min(value = PRODUCT_PRICE_MIN)
     private int price; // double이었으나, int로 수정
 
     @NotNull
-    @Min(PRODUCT_QUANTITY_MIN_SIZE)
+    @Min(value = PRODUCT_QUANTITY_MIN_SIZE)
     private int stockQuantity; // 상품 재고수량
 
     @NotNull

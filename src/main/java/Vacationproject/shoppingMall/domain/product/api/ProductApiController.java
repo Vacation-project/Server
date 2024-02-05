@@ -27,9 +27,9 @@ public class ProductApiController {
      */
     @PostMapping("/{categoryId}/admin")
     public ApiResponse<ProductMessage> createProduct(
-            @Valid final CreateProductRequest createProductRequest,
+            @RequestBody @Valid final CreateProductRequest createProductRequest,
 //                                     @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @PathVariable final Long categoryId) throws IOException {
+            @PathVariable(name = "categoryId") final Long categoryId) throws IOException {
         /* 로그인한 유저가 어드민이 맞는지 검증 */
         // authService.checkIsAdmin(principalDetails.getUser())
 
@@ -42,10 +42,10 @@ public class ProductApiController {
      */
     @GetMapping("/{productId}")
     public ApiResponse<ProductDetailResponse> getProduct(
-            @PathVariable Long productId,
-            @PageableDefault(page = 0, size=4, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+            @PathVariable(name = "productId") final Long productId,
+            @PageableDefault(page = 0, size=4, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
     ) {
-        ProductDetailResponse productDetailResponse = productService.getProductAndReview(productId, pageable);
+        final ProductDetailResponse productDetailResponse = productService.getProductAndReview(productId, pageable);
         return success(productDetailResponse);
     }
 
@@ -54,23 +54,23 @@ public class ProductApiController {
      */
     @GetMapping("/{productId}/admin")
     public ApiResponse<ProductUpdateResponse> updateProductForm(
-            @PathVariable Long productId
+            @PathVariable(name = "productId") final Long productId
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
         // authService.checkIsAdmin(principalDetails.getUser())
-        ProductUpdateResponse productUpdateResponse = productService.getProduct(productId);
+        final ProductUpdateResponse productUpdateResponse = productService.getProduct(productId);
 
         return success(productUpdateResponse);
     }
 
     @PutMapping("/{productId}/admin")
     public ApiResponse<ProductMessage> updateProduct(
-            @PathVariable Long productId,
-            @RequestBody @Valid UpdateProductRequest updateProductRequest
+            @PathVariable(name = "productId") final Long productId,
+            @RequestBody @Valid final UpdateProductRequest updateProductRequest
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) throws IOException {
         // authService.checkIsAdmin(principalDetails.getUser())
-        ProductMessage message = productService.updateProduct(productId, updateProductRequest);
+        final ProductMessage message = productService.updateProduct(productId, updateProductRequest);
 
         return success(message);
     }
@@ -80,11 +80,11 @@ public class ProductApiController {
      */
     @DeleteMapping("/{productId}/admin")
     public ApiResponse<ProductMessage> deleteProduct(
-            @PathVariable Long productId
+            @PathVariable(name = "productId") final Long productId
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
         // authService.checkIsAdmin(principalDetails.getUser())
-        ProductMessage message = productService.deleteProduct(productId);
+        final ProductMessage message = productService.deleteProduct(productId);
 
         return success(message);
     }

@@ -29,10 +29,12 @@ public class ProductService {
 
     @Transactional
     // 상품 생성
-    public ProductMessage createProduct(CreateProductRequest createProductRequest, Long categoryId) throws IOException {
-        Category category = categoryRepository.findById(categoryId)
+    public ProductMessage createProduct(final CreateProductRequest createProductRequest, final Long categoryId) throws IOException {
+
+        //TODO 상품 이름 중복 테스트 추가
+        final Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
-        Product product = productRepository.save(createProductRequest.toEntity(category));
+        final Product product = productRepository.save(createProductRequest.toEntity(category));
 
         imageStore.storeFiles(createProductRequest.images()).forEach(imageUrl ->
                 product.addProductImage(ProductImage.of(product, imageUrl)));
@@ -43,8 +45,8 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductMessage deleteProduct(Long productId) {
-        Product product = productRepository.findById(productId)
+    public ProductMessage deleteProduct(final Long productId) {
+        final Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
         productRepository.delete(product);
 
@@ -52,22 +54,22 @@ public class ProductService {
     }
 
 
-    public ProductUpdateResponse getProduct(Long productId) {
-        Product product = productRepository.findById(productId)
+    public ProductUpdateResponse getProduct(final Long productId) {
+        final Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
         return ProductUpdateResponse.of(product);
     }
 
-    public ProductMessage updateProduct(Long productId, UpdateProductRequest updateProduct) throws IOException {
-        Long categoryId = updateProduct.productCategoryId();
+    public ProductMessage updateProduct(final Long productId, final UpdateProductRequest updateProduct) throws IOException {
+        final Long categoryId = updateProduct.productCategoryId();
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
-        Category category = categoryRepository.findById(categoryId)
+        final Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
-        List<String> imageUrls = imageStore.storeFiles(updateProduct.images());
+        final List<String> imageUrls = imageStore.storeFiles(updateProduct.images());
 
         /*Dirty Checking 발생*/
         product.update(
@@ -78,10 +80,10 @@ public class ProductService {
         return new ProductMessage(true);
     }
 
-    public ProductDetailResponse getProductAndReview(Long productId, Pageable pageable) {
-        Product product = productRepository.findById(productId)
+    public ProductDetailResponse getProductAndReview(final Long productId, final Pageable pageable) {
+        final Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
-        Page<Product> products = productRepository.findByCategoryId(product.getCategory().getId(), pageable);
+        final Page<Product> products = productRepository.findByCategoryId(product.getCategory().getId(), pageable);
 
         return ProductDetailResponse.of(product, products);
     }

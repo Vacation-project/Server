@@ -28,10 +28,10 @@ public class ProductDto {
             @NotNull
             String productName,
             @NotNull
-            @Min(PRODUCT_PRICE_MIN)
+            @Min(value = PRODUCT_PRICE_MIN)
             int productPrice,
             @NotNull
-            @Min(PRODUCT_QUANTITY_MIN_SIZE)
+            @Min(value = PRODUCT_QUANTITY_MIN_SIZE)
             int stockQuantity,
             @NotNull
             @Size(min = PRODUCT_CONTENT_MIN_SIZE)
