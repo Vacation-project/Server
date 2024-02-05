@@ -26,13 +26,11 @@ public class ProductImage {
     private String imageUrl;
 
     public static ProductImage of(Product product, String imageUrl) {
-        ProductImage productImage = ProductImage.builder()
+
+        return ProductImage.builder()
                 .product(product) //연관관계 설정
                 .imageUrl(imageUrl)
                 .build();
 
-        product.getProductImageList().add(productImage); //연관관계 설정
-
-        return productImage;
     }
 }
