@@ -6,6 +6,7 @@ import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.favorite.model.Favorite;
 import Vacationproject.shoppingMall.domain.review.model.Review;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -34,11 +35,11 @@ public class Product extends BaseEntity {
     private String name;
 
     @NotNull
-    @Size(min = PRODUCT_PRICE_MIN)
+    @Min(PRODUCT_PRICE_MIN)
     private int price; // double이었으나, int로 수정
 
     @NotNull
-    @Size(min = PRODUCT_QUANTITY_MIN_SIZE)
+    @Min(PRODUCT_QUANTITY_MIN_SIZE)
     private int stockQuantity; // 상품 재고수량
 
     @NotNull

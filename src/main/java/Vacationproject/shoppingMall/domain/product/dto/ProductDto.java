@@ -4,6 +4,7 @@ import Vacationproject.shoppingMall.common.constant.ConstraintConstants;
 import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -22,14 +23,15 @@ public class ProductDto {
      * Request
      */
     @Builder
+
     public record CreateProductRequest(
             @NotNull
             String productName,
             @NotNull
-            @Size(min = PRODUCT_PRICE_MIN)
+            @Min(PRODUCT_PRICE_MIN)
             int productPrice,
             @NotNull
-            @Size(min = PRODUCT_QUANTITY_MIN_SIZE)
+            @Min(PRODUCT_QUANTITY_MIN_SIZE)
             int stockQuantity,
             @NotNull
             @Size(min = PRODUCT_CONTENT_MIN_SIZE)
