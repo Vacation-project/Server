@@ -8,6 +8,8 @@ import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
 import Vacationproject.shoppingMall.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +30,8 @@ public class ProductService {
     @Transactional
     // 상품 생성
     public ProductMessage createProduct(CreateProductRequest createProductRequest, Long categoryId) throws IOException {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException(categoryId));
         Product product = productRepository.save(createProductRequest.toEntity(category));
 
         imageStore.storeFiles(createProductRequest.images()).forEach(imageUrl ->
@@ -41,7 +44,8 @@ public class ProductService {
 
     @Transactional
     public ProductMessage deleteProduct(Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
         productRepository.delete(product);
 
         return new ProductMessage(true);
@@ -49,7 +53,8 @@ public class ProductService {
 
 
     public ProductUpdateResponse getProduct(Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         return ProductUpdateResponse.of(product);
     }
@@ -57,8 +62,10 @@ public class ProductService {
     public ProductMessage updateProduct(Long productId, UpdateProductRequest updateProduct) throws IOException {
         Long categoryId = updateProduct.productCategoryId();
 
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
         List<String> imageUrls = imageStore.storeFiles(updateProduct.images());
 
@@ -69,5 +76,13 @@ public class ProductService {
                 category);
 
         return new ProductMessage(true);
+    }
+
+    public ProductDetailResponse getProductAndReview(Long productId, Pageable pageable) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
+        Page<Product> products = productRepository.findByCategoryId(product.getCategory().getId(), pageable);
+
+        return ProductDetailResponse.of(product, products);
     }
 }

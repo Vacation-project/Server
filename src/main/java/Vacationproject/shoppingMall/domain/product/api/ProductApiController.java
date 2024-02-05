@@ -4,6 +4,9 @@ import Vacationproject.shoppingMall.common.dto.ApiResponse;
 import Vacationproject.shoppingMall.domain.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -37,6 +40,14 @@ public class ProductApiController {
     /**
      * 상품 상세 페이지
      */
+    @GetMapping("/{productId}")
+    public ApiResponse<ProductDetailResponse> getProduct(
+            @PathVariable Long productId,
+            @PageableDefault(page = 0, size=4, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        ProductDetailResponse productDetailResponse = productService.getProductAndReview(productId, pageable);
+        return success(productDetailResponse);
+    }
 
     /**
      * 상품 수정
