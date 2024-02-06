@@ -3,6 +3,7 @@ package Vacationproject.shoppingMall.domain.product.service;
 import Vacationproject.shoppingMall.domain.category.exception.CategoryNotFoundException;
 import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.category.repository.CategoryRepository;
+import Vacationproject.shoppingMall.domain.product.exception.ProductException;
 import Vacationproject.shoppingMall.domain.product.exception.ProductNotFoundException;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.PRODUCT_NAME_DUPLICATION;
 import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 
 @Service
@@ -31,8 +33,8 @@ public class ProductService {
     @Transactional
     // 상품 생성
     public ProductMessage createProduct(final CreateProductRequest createProductRequest, final Long categoryId, List<MultipartFile> images) throws IOException {
+        nameDuplicationCheck(createProductRequest.productName());
 
-        //TODO 상품 이름 중복 테스트 추가
         final Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
         final Product product = productRepository.save(createProductRequest.toEntity(category));
@@ -60,7 +62,10 @@ public class ProductService {
         return ProductUpdateResponse.of(product);
     }
 
+    @Transactional
     public ProductMessage updateProduct(final Long productId, final UpdateProductRequest updateProduct) throws IOException {
+        nameDuplicationCheck(updateProduct.productName());
+
         final Long categoryId = updateProduct.productCategoryId();
 
         Product product = productRepository.findById(productId)
@@ -85,5 +90,11 @@ public class ProductService {
         final Page<Product> products = productRepository.findByCategoryId(product.getCategory().getId(), pageable);
 
         return ProductDetailResponse.of(product, products);
+    }
+
+    private void nameDuplicationCheck(String name) {
+        if (!productRepository.existsByName(name)){
+            throw new ProductException(PRODUCT_NAME_DUPLICATION);
+        }
     }
 }
