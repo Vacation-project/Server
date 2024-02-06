@@ -35,10 +35,7 @@ public class ProductDto {
             int stockQuantity,
             @NotNull
             @Size(min = PRODUCT_CONTENT_MIN_SIZE)
-            String content,
-//            List<String> imageUrls //TODO image가 MutipartFile로 넘어오는게 맞는지, String으로 넘어와야 하는지 고민
-            @NotNull
-            List<MultipartFile> images
+            String content
     ) {
         public Product toEntity(Category category) {
             return Product.builder()

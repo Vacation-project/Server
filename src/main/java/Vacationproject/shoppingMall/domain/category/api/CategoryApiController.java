@@ -5,6 +5,7 @@ import Vacationproject.shoppingMall.domain.category.repository.CategoryRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -12,12 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CategoryApiController {
     private final CategoryRepository categoryRepository;
+
     @PostMapping
-    public String createCategory() {
+    public String createCategory(@RequestParam("categoryName") String categoryName) {
         Category category = Category.builder()
-                .name("상의")
+                .name(categoryName)
                 .build();
         categoryRepository.save(category);
-        return "상의";
+        return categoryName;
     }
 }
