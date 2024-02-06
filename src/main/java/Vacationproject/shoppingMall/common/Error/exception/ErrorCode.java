@@ -43,7 +43,7 @@ public enum ErrorCode {
     /**
      * Product
      */
-    PRODUCT_NAME_DUPLICATION(409, "P001", "이미 존재하는 상품 이름입니다.");
+    PRODUCT_NAME_DUPLICATION(409, "P001", "이미 존재하는 상품 이름입니다."),
 
     /**
      * Cart
@@ -60,6 +60,7 @@ public enum ErrorCode {
     /**
      * Category
      */
+    CATEGORY_NAME_DUPLICATION(409, "CT001", "이미 존재하는 카테고리 이름입니다.");
 
     //Login, Join
 
