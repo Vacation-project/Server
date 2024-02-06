@@ -1,7 +1,7 @@
 package Vacationproject.shoppingMall.domain.category.api;
 
-import Vacationproject.shoppingMall.domain.category.model.Category;
-import Vacationproject.shoppingMall.domain.category.repository.CategoryRepository;
+import Vacationproject.shoppingMall.common.dto.ApiResponse;
+import Vacationproject.shoppingMall.domain.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,14 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/category")
 @RequiredArgsConstructor
 public class CategoryApiController {
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
     @PostMapping
-    public String createCategory(@RequestParam("categoryName") String categoryName) {
-        Category category = Category.builder()
-                .name(categoryName)
-                .build();
-        categoryRepository.save(category);
-        return categoryName;
+    public ApiResponse<String> createCategory(@RequestParam("categoryName") String categoryName) {
+        return ApiResponse.success(categoryService.createCategory(categoryName));
     }
 }
