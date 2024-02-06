@@ -93,7 +93,7 @@ public class ProductService {
     }
 
     private void nameDuplicationCheck(String name) {
-        if (!productRepository.existsByName(name)){
+        if (productRepository.existsByName(name)){
             throw new ProductException(PRODUCT_NAME_DUPLICATION);
         }
     }
