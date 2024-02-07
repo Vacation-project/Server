@@ -4,6 +4,7 @@ import Vacationproject.shoppingMall.domain.product.model.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,9 @@ public class Category {
 
     @OneToMany(cascade = CascadeType.ALL) // 해당 카테고리가 삭제된다면 그에 관련된 모든 상품이 삭제
     private List<Product> productList = new ArrayList<>();
+
+    @Builder
+    public Category(String name) {
+        this.name = name;
+    }
 }

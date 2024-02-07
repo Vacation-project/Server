@@ -3,7 +3,6 @@ package Vacationproject.shoppingMall.domain.product.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Getter
@@ -22,7 +21,7 @@ public class ProductImage {
     private Product product;
 
     @NotNull
-    @URL /* 올바른 url 형식이 아니라면 검증 부분에서 에러를 발생시킴 */
+//    @URL /* 올바른 url 형식이 아니라면 검증 부분에서 에러를 발생시킴 */
     private String imageUrl;
 
     public static ProductImage of(Product product, String imageUrl) {

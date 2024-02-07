@@ -3,10 +3,16 @@ package Vacationproject.shoppingMall.domain.product.api;
 import Vacationproject.shoppingMall.common.dto.ApiResponse;
 import Vacationproject.shoppingMall.domain.product.service.ProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 import static Vacationproject.shoppingMall.common.dto.ApiResponse.success;
 import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
@@ -24,42 +30,51 @@ public class ProductApiController {
      */
     @PostMapping("/{categoryId}/admin")
     public ApiResponse<ProductMessage> createProduct(
-            @Valid final CreateProductRequest createProductRequest,
+            @RequestPart(value = "createProductRequest") @Valid final CreateProductRequest createProductRequest,
+            @NotNull @RequestPart(value = "images") List<MultipartFile> images,
 //                                     @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @PathVariable final Long categoryId) throws IOException {
+            @PathVariable(name = "categoryId") final Long categoryId) throws IOException {
         /* 로그인한 유저가 어드민이 맞는지 검증 */
         // authService.checkIsAdmin(principalDetails.getUser())
 
-        ProductMessage message = productService.createProduct(createProductRequest, categoryId);
+        ProductMessage message = productService.createProduct(createProductRequest, categoryId, images);
         return success(message);
     }
 
     /**
      * 상품 상세 페이지
      */
+    @GetMapping("/{productId}")
+    public ApiResponse<ProductDetailResponse> getProduct(
+            @PathVariable(name = "productId") final Long productId,
+            @PageableDefault(page = 0, size=4, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
+    ) {
+        final ProductDetailResponse productDetailResponse = productService.getProductAndReview(productId, pageable);
+        return success(productDetailResponse);
+    }
 
     /**
      * 상품 수정
      */
     @GetMapping("/{productId}/admin")
     public ApiResponse<ProductUpdateResponse> updateProductForm(
-            @PathVariable Long productId
+            @PathVariable(name = "productId") final Long productId
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
         // authService.checkIsAdmin(principalDetails.getUser())
-        ProductUpdateResponse productUpdateResponse = productService.getProduct(productId);
+        final ProductUpdateResponse productUpdateResponse = productService.getProduct(productId);
 
         return success(productUpdateResponse);
     }
 
     @PutMapping("/{productId}/admin")
     public ApiResponse<ProductMessage> updateProduct(
-            @PathVariable Long productId,
-            @RequestBody @Valid UpdateProductRequest updateProductRequest
+            @PathVariable(name = "productId") final Long productId,
+            @RequestBody @Valid final UpdateProductRequest updateProductRequest
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) throws IOException {
         // authService.checkIsAdmin(principalDetails.getUser())
-        ProductMessage message = productService.updateProduct(productId, updateProductRequest);
+        final ProductMessage message = productService.updateProduct(productId, updateProductRequest);
 
         return success(message);
     }
@@ -69,11 +84,11 @@ public class ProductApiController {
      */
     @DeleteMapping("/{productId}/admin")
     public ApiResponse<ProductMessage> deleteProduct(
-            @PathVariable Long productId
+            @PathVariable(name = "productId") final Long productId
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
         // authService.checkIsAdmin(principalDetails.getUser())
-        ProductMessage message = productService.deleteProduct(productId);
+        final ProductMessage message = productService.deleteProduct(productId);
 
         return success(message);
     }

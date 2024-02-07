@@ -3,17 +3,22 @@ package Vacationproject.shoppingMall.domain.product.service;
 import Vacationproject.shoppingMall.domain.category.exception.CategoryNotFoundException;
 import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.category.repository.CategoryRepository;
+import Vacationproject.shoppingMall.domain.product.exception.ProductException;
 import Vacationproject.shoppingMall.domain.product.exception.ProductNotFoundException;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
 import Vacationproject.shoppingMall.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
+import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.PRODUCT_NAME_DUPLICATION;
 import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 
 @Service
@@ -27,40 +32,48 @@ public class ProductService {
 
     @Transactional
     // 상품 생성
-    public ProductMessage createProduct(CreateProductRequest createProductRequest, Long categoryId) throws IOException {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-        Product product = productRepository.save(createProductRequest.toEntity(category));
+    public ProductMessage createProduct(final CreateProductRequest createProductRequest, final Long categoryId, List<MultipartFile> images) throws IOException {
+        nameDuplicationCheck(createProductRequest.productName());
 
-        imageStore.storeFiles(createProductRequest.images()).forEach(imageUrl ->
+        final Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException(categoryId));
+        final Product product = productRepository.save(createProductRequest.toEntity(category));
+
+        imageStore.storeFiles(images).forEach(imageUrl ->
                 product.addProductImage(ProductImage.of(product, imageUrl)));
-//        createProductRequest.imageUrls().forEach(imageUrl ->
-//                product.addProductImage(ProductImage.of(product, imageUrl)));
 
         return new ProductMessage(true);
     }
 
     @Transactional
-    public ProductMessage deleteProduct(Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
+    public ProductMessage deleteProduct(final Long productId) {
+        final Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
         productRepository.delete(product);
 
         return new ProductMessage(true);
     }
 
 
-    public ProductUpdateResponse getProduct(Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
+    public ProductUpdateResponse getProduct(final Long productId) {
+        final Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         return ProductUpdateResponse.of(product);
     }
 
-    public ProductMessage updateProduct(Long productId, UpdateProductRequest updateProduct) throws IOException {
-        Long categoryId = updateProduct.productCategoryId();
+    @Transactional
+    public ProductMessage updateProduct(final Long productId, final UpdateProductRequest updateProduct) throws IOException {
+        nameDuplicationCheck(updateProduct.productName());
 
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException(productId));
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+        final Long categoryId = updateProduct.productCategoryId();
 
-        List<String> imageUrls = imageStore.storeFiles(updateProduct.images());
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
+        final Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException(categoryId));
+
+        final List<String> imageUrls = imageStore.storeFiles(updateProduct.images());
 
         /*Dirty Checking 발생*/
         product.update(
@@ -69,5 +82,19 @@ public class ProductService {
                 category);
 
         return new ProductMessage(true);
+    }
+
+    public ProductDetailResponse getProductAndReview(final Long productId, final Pageable pageable) {
+        final Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
+        final Page<Product> products = productRepository.findByCategoryId(product.getCategory().getId(), pageable);
+
+        return ProductDetailResponse.of(product, products);
+    }
+
+    private void nameDuplicationCheck(String name) {
+        if (productRepository.existsByName(name)){
+            throw new ProductException(PRODUCT_NAME_DUPLICATION);
+        }
     }
 }
