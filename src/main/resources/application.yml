@@ -9,12 +9,22 @@ server:
   port: 8080
 # DataBase Settings
 spring:
-
   datasource:
     url: jdbc:h2:tcp://localhost/~/test
     driver-class-name: org.h2.Driver
     username: sa
     password:
+
+springdoc:
+  swagger-ui:
+    path: /api-docs.html
+    tagsSorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
 
 # JPA Settings
   jpa:
