@@ -4,6 +4,7 @@ import Vacationproject.shoppingMall.common.constant.ConstraintConstants;
 import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -26,15 +27,19 @@ public class ProductDto {
 
     public record CreateProductRequest(
             @NotNull
+            @Schema(description = PRODUCT_NAME, nullable = false)
             String productName,
             @NotNull
             @Min(value = PRODUCT_PRICE_MIN)
+            @Schema(description = PRODUCT_PRICE, nullable = false)
             int productPrice,
             @NotNull
             @Min(value = PRODUCT_QUANTITY_MIN_SIZE)
+            @Schema(description = PRODUCT_STOCK_QUANTITY, nullable = false)
             int stockQuantity,
             @NotNull
             @Size(min = PRODUCT_CONTENT_MIN_SIZE)
+            @Schema(description = PRODUCT_CONTENT, nullable = false)
             String content
     ) {
         public Product toEntity(Category category) {
@@ -52,21 +57,27 @@ public class ProductDto {
     @Builder
     public record UpdateProductRequest(
             @NotNull
+            @Schema(description = PRODUCT_NAME, nullable = false)
             String productName,
             @NotNull
             @Size(min = PRODUCT_PRICE_MIN)
+            @Schema(description = PRODUCT_PRICE, nullable = false)
             int productPrice,
             @NotNull
             @Size(min = PRODUCT_QUANTITY_MIN_SIZE)
+            @Schema(description = PRODUCT_STOCK_QUANTITY, nullable = false)
             int stockQuantity,
             @NotNull
             @Size(min = ConstraintConstants.PRODUCT_CONTENT_MIN_SIZE)
-            String productComment,
+            @Schema(description = PRODUCT_CONTENT, nullable = false)
+            String productContent,
 //            @NotNull
 //            List<String> imageUrls,
             @NotNull
+            @Schema(description = PRODUCT_IMAGES, nullable = false)
             List<MultipartFile> images,
             @NotNull
+            @Schema(description = PRODUCT_CATEGORY_ID, nullable = false)
             Long productCategoryId
     ) {
 
@@ -85,18 +96,23 @@ public class ProductDto {
 
     @Builder
     public record ProductUpdateResponse(
-            String name,
-            int price,
+            @Schema(description = PRODUCT_NAME)
+            String productName,
+            @Schema(description = PRODUCT_PRICE)
+            int productPrice,
+            @Schema(description = PRODUCT_STOCK_QUANTITY)
             int stockQuantity,
-            String content,
+            @Schema(description = PRODUCT_CONTENT)
+            String productContent,
+            @Schema(description = PRODUCT_IMAGES)
             List<String> imageUrl
     ) {
         public static ProductUpdateResponse of(Product product) {
             return ProductUpdateResponse.builder()
-                    .name(product.getName())
-                    .price(product.getPrice())
+                    .productName(product.getName())
+                    .productPrice(product.getPrice())
                     .stockQuantity(product.getStockQuantity())
-                    .content(product.getContent())
+                    .productContent(product.getContent())
                     .imageUrl(product.getProductImageList().stream().map(ProductImage::getImageUrl).toList())
                     .build();
         }
@@ -106,14 +122,23 @@ public class ProductDto {
     // TODO 추후 성능 개선을 위해 리팩토링 예정
     @Builder
     public record ProductDetailResponse(
+            @Schema(description = PRODUCT_ID)
             Long id,
+            @Schema(description = PRODUCT_NAME)
             String productName,
+            @Schema(description = PRODUCT_PRICE)
             int productPrice,
+            @Schema(description = PRODUCT_STOCK_QUANTITY)
             int stockQuantity,
+            @Schema(description = PRODUCT_CONTENT)
             String productContent,
+            @Schema(description = PRODUCT_CATEGORY_ID)
             Long categoryId, //연관상품을 조회할 때 필요하기 때문에 추가
+            @Schema(description = PRODUCT_IMAGES)
             List<String> imageUrls,
+            @Schema(description = PRODUCT_REVIEWS)
             List<ReviewResponse> reviewList,
+            @Schema(description = PRODUCT_RELATION_PRODUCTS)
             List<RelationProduct> relationProductList
     ) {
         public static ProductDetailResponse of(Product product, Page<Product> products) {
@@ -133,8 +158,11 @@ public class ProductDto {
 
     @Builder
     public record RelationProduct(
+            @Schema(description = PRODUCT_ID)
             Long productId,
+            @Schema(description = PRODUCT_NAME)
             String productName,
+            @Schema(description = PRODUCT_IMAGES)
             List<String> imageUrls
     ) {
         public static RelationProduct of(Product product) {
