@@ -5,7 +5,6 @@ public class SwaggerConstants {
     /**
      * swagger
      */
-
     public static final String[] SWAGGER_APPOINTED_PATHS = {
             "/**"
     };
@@ -16,6 +15,12 @@ public class SwaggerConstants {
     public static final String SECURITY_SCHEME_NAME = "bearer-key";
     public static final String SECURITY_SCHEME = "bearer";
     public static final String SECURITY_SCHEME_BEARER_FORMAT = "JWT";
-    public static final String SECURITY_SCHEME_DESCRIPTION = "JWT 토큰 키를 입력해주세요!";
+    public static final String SECURITY_SCHEME_DESCRIPTION = "JWT 토큰 키를 입력해주세요";
 
+
+    /**
+     * Product
+     */
+    public static final String TAG_PRODUCT = "Product";
+    public static final String TAG_PRODUCT_DESCRIPTION = "Product API";
 }
