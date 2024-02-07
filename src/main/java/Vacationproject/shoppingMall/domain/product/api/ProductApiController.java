@@ -33,10 +33,11 @@ public class ProductApiController {
      * 만약 로그인 X or Admin X인 경우 예외 발생
      */
     @PostMapping("/{categoryId}/admin")
-    @Operation(summary = "상품 등록", description = "상품 정보과 상품 이미지(images)를 이용하여 상품을 신규 등록합니다.", responses = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "상품 생성 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "상품 이름 중복 오류")
-    })
+    @Operation(summary = "상품 등록", description = "상품 정보과 상품 이미지(images)를 이용하여 상품을 신규 등록합니다."
+//            , responses = {
+//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "상품 생성 성공"),
+//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "상품 이름 중복 오류", content = @Content(schema = ErrorResponse.class))}
+    )
     public ApiResponse<ProductMessage> createProduct(
             @RequestPart(value = "createProductRequest") @Valid final CreateProductRequest createProductRequest,
             @NotNull @RequestPart(value = "images") List<MultipartFile> images,

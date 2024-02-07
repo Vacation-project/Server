@@ -82,7 +82,7 @@ public class Product extends BaseEntity {
         this.name = updateProductRequest.productName();
         this.price = updateProductRequest.productPrice();
         this.stockQuantity = updateProductRequest.stockQuantity();
-        this.content = updateProductRequest.productComment();
+        this.content = updateProductRequest.productContent();
         this.category = category;
         this.productImageList.clear();
         this.productImageList.addAll(productImages);
