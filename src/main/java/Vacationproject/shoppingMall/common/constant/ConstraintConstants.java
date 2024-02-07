@@ -17,10 +17,19 @@ public class ConstraintConstants {
 
     public static final String PRODUCT_CATEGORY_ID = "상품 카테고리 ID";
     public static final String PRODUCT_REVIEWS = "상품 리뷰들";
-    public static final String PRODUCT_RELATION_PRODUCTS = "연관 상품들";
+    public static final String PRODUCT_RELATION_PRODUCTS = "연관 상품";
 
     public static final int PRODUCT_PRICE_MIN = 100;
     public static final int PRODUCT_QUANTITY_MIN_SIZE = 1;
     public static final int PRODUCT_CONTENT_MIN_SIZE = 10;
+
+    /**
+     * Review
+     */
+    public static final String REVIEW_USER_NICKNAME = "리뷰 회원 닉네임";
+    public static final String REVIEW_TITLE = "리뷰 제목";
+    public static final String REVIEW_COMMENT = "리뷰 내용";
+    public static final String REVIEW_CREATE_DATE = "리뷰 작성 시간";
+    public static final String REVIEW_RATING = "리뷰 별점";
 
 }
