@@ -8,4 +8,5 @@ public class ConstraintConstants {
     public static final int PRODUCT_QUANTITY_MIN_SIZE = 1;
 
     public static final int PRODUCT_CONTENT_MIN_SIZE = 10;
+
 }

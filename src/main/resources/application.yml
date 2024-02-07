@@ -4,18 +4,54 @@
 #    username: shop
 #    password: 85947ads
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-#
-#  sql:
-#    init:
-#      mode: always
-#
-#server:
-#  port: 8080
+
+server:
+  port: 8080
+# DataBase Settings
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+springdoc:
+  swagger-ui:
+    path: /api-docs.html
+    tagsSorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+
+# JPA Settings
+  jpa:
+    hibernate:
+      ddl-auto: create
+    generate-ddl: false
+    show-sql: true
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: true
+      default_batch_fetch_size: 100
+
+  servlet:
+    multipart:
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
+
+  sql:
+    init:
+      mode: always
+
+# hibernate logging
+logging:
+  level:
+    org.hibernate: info
+
+file:
+  dir: /Users/sangmin8817/Desktop/images/
