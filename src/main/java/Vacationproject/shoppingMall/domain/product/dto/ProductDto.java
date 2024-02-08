@@ -4,6 +4,7 @@ import Vacationproject.shoppingMall.common.constant.ConstraintConstants;
 import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -161,6 +162,7 @@ public class ProductDto {
             @Schema(description = PRODUCT_PRICE)
             int productPrice,
             @Schema(description = PRODUCT_CREATE_TIME)
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
             LocalDateTime productCreateTime,
             @Schema(description = PRODUCT_IMAGES)
             List<String> imageUrls
