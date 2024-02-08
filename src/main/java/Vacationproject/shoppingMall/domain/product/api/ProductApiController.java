@@ -1,6 +1,5 @@
 package Vacationproject.shoppingMall.domain.product.api;
 
-import Vacationproject.shoppingMall.common.constant.SwaggerConstants;
 import Vacationproject.shoppingMall.common.dto.ApiResponse;
 import Vacationproject.shoppingMall.domain.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,13 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+import static Vacationproject.shoppingMall.common.constant.SwaggerConstants.*;
 import static Vacationproject.shoppingMall.common.dto.ApiResponse.success;
 import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
-@Tag(name = SwaggerConstants.TAG_PRODUCT, description = SwaggerConstants.TAG_PRODUCT_DESCRIPTION)
+@Tag(name = TAG_PRODUCT, description = TAG_PRODUCT_DESCRIPTION)
 public class ProductApiController {
     private final ProductService productService;
 
@@ -36,7 +36,7 @@ public class ProductApiController {
      * 만약 로그인 X or Admin X인 경우 예외 발생
      */
     @PostMapping("/{categoryId}/admin")
-    @Operation(summary = "상품 등록", description = "상품 정보과 상품 이미지(images)를 이용하여 상품을 신규 등록합니다."
+    @Operation(summary = CREATE_PRODUCT_SUMMARY, description = CREATE_PRODUCT_DESCRIPTION
 //            , responses = {
 //            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "상품 생성 성공"),
 //            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "상품 이름 중복 오류", content = @Content(schema = ErrorResponse.class))}
@@ -45,7 +45,7 @@ public class ProductApiController {
             @RequestPart(value = "createProductRequest") @Valid final CreateProductRequest createProductRequest,
             @NotNull @RequestPart(value = "images") List<MultipartFile> images,
 //                                     @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @Parameter(name = "categoryId", description = "Category 의 id", in = ParameterIn.PATH) @PathVariable(name = "categoryId") final Long categoryId) throws IOException {
+            @Parameter(name = CATEGORY_ID, description = CATEGORY_ID_DESCRIPTION, in = ParameterIn.PATH) @PathVariable(name = CATEGORY_ID) final Long categoryId) throws IOException {
         /* 로그인한 유저가 어드민이 맞는지 검증 */
         // authService.checkIsAdmin(principalDetails.getUser())
 
@@ -57,9 +57,9 @@ public class ProductApiController {
      * 상품 상세 페이지
      */
     @GetMapping("/{productId}")
-    @Operation(summary = "상품 정보 페이지", description = "ProductId와 일치하는 상품 정보를 가져옵니다.")
+    @Operation(summary = DETAIL_PRODUCT_SUMMARY, description = DETAIL_PRODUCT_DESCRIPTION)
     public ApiResponse<ProductDetailResponse> getProduct(
-            @Parameter(name = "productId", description = "Product 의 id", in = ParameterIn.PATH) @PathVariable(name = "productId") final Long productId,
+            @Parameter(name = PRODUCT_ID, description = PRODUCT_ID_DESCRIPTION, in = ParameterIn.PATH) @PathVariable(name = PRODUCT_ID) final Long productId,
             @Parameter(name = "상품 페이징 정보", description = "전송하지 않아도 됩니다.") @PageableDefault(page = 0, size=4, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
     ) {
         final ProductDetailResponse productDetailResponse = productService.getProductAndReview(productId, pageable);
@@ -70,9 +70,9 @@ public class ProductApiController {
      * 상품 수정
      */
     @GetMapping("/{productId}/admin")
-    @Operation(summary = "상품 수정 폼", description = "productId와 일치하는 상품의 정보를 가져옵니다.")
+    @Operation(summary = UPDATE_PRODUCT_FORM_SUMMARY, description = UPDATE_PRODUCT_FORM_DESCRIPTION)
     public ApiResponse<ProductUpdateResponse> updateProductForm(
-            @Parameter(name = "productId", description = "Product 의 id", in = ParameterIn.PATH) @PathVariable(name = "productId") final Long productId
+            @Parameter(name = PRODUCT_ID, description = PRODUCT_ID_DESCRIPTION, in = ParameterIn.PATH) @PathVariable(name = PRODUCT_ID) final Long productId
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
         // authService.checkIsAdmin(principalDetails.getUser())
@@ -82,9 +82,9 @@ public class ProductApiController {
     }
 
     @PutMapping("/{productId}/admin")
-    @Operation(summary = "상품 수정", description = "수정한 상품 정보와 상품 이미지(images)를 이용하여 상품 정보를 수정합니다.")
+    @Operation(summary = UPDATE_PRODUCT_SUMMARY, description = UPDATE_PRODUCT_DESCRIPTION)
     public ApiResponse<ProductMessage> updateProduct(
-            @Parameter(name = "productId", description = "Product 의 id", in = ParameterIn.PATH) @PathVariable(name = "productId") final Long productId,
+            @Parameter(name = PRODUCT_ID, description = PRODUCT_ID_DESCRIPTION, in = ParameterIn.PATH) @PathVariable(name = PRODUCT_ID) final Long productId,
             @RequestPart(value = "updateProductRequest") @Valid final UpdateProductRequest updateProductRequest,
             @RequestPart(value = "images", required = false) @Nullable List<MultipartFile> images //이미지를 업데이트 하지 않을 경우, 기존 이미지 사용
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
@@ -103,9 +103,9 @@ public class ProductApiController {
      * 카테고리별 상품 목록 조회
      */
     @GetMapping
-    @Operation(summary = "카테고리별 상품 조회", description = "CategoryId와 일치하는 카테고리의 상품을 조회합니다.")
+    @Operation(summary = CATEGORY_PRODUCT_SUMMARY, description = CATEGORY_PRODUCT_DESCRIPTION)
     public ApiResponse<List<CategoryProductResponse>> getCategoryProduct(
-            @Parameter(name = "categoryId", description = "Category의 id") @RequestParam(name = "categoryId") final Long categoryId,
+            @Parameter(name = CATEGORY_ID, description = CATEGORY_ID_DESCRIPTION) @RequestParam(name = CATEGORY_ID) final Long categoryId,
             @Parameter(name = "상품 페이징 정보", description = "sort에 정렬하고 싶은 기준을 넣어 전송하면 됩니다.") @PageableDefault(page = 0, size=30, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
     ) {
         List<CategoryProductResponse> categoryProductResponseList = productService.getCategoryProducts(categoryId, pageable);
@@ -117,9 +117,9 @@ public class ProductApiController {
      * 상품 삭제
      */
     @DeleteMapping("/{productId}/admin")
-    @Operation(summary = "상품 삭제", description = "ProductId와 일치하는 상품을 삭제합니다.")
+    @Operation(summary = DELETE_PRODUCT_SUMMARY, description = DELETE_PRODUCT_DESCRIPTION)
     public ApiResponse<ProductMessage> deleteProduct(
-            @Parameter(name = "productId", description = "Product 의 id", in = ParameterIn.PATH) @PathVariable(name = "productId") final Long productId
+            @Parameter(name = PRODUCT_ID, description = PRODUCT_ID_DESCRIPTION, in = ParameterIn.PATH) @PathVariable(name = PRODUCT_ID) final Long productId
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
         // authService.checkIsAdmin(principalDetails.getUser())
