@@ -23,4 +23,10 @@ public class SwaggerConstants {
      */
     public static final String TAG_PRODUCT = "Product";
     public static final String TAG_PRODUCT_DESCRIPTION = "Product API";
+
+    /**
+     * Category
+     */
+    public static final String TAG_CATEGORY = "Category";
+    public static final String TAG_CATEGORY_DESCRIPTION = "Category API";
 }
