@@ -1,7 +1,6 @@
 package Vacationproject.shoppingMall.domain.category.service;
 
 import Vacationproject.shoppingMall.domain.category.exception.CategoryException;
-import Vacationproject.shoppingMall.domain.category.exception.CategoryNotFoundException;
 import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.CATEGORY_NAME_DUPLICATION;
+import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.CATEGORY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class CategoryService {
 
     public Category getCategory(Long categoryId) {
         return categoryRepository.findById(categoryId).
-                orElseThrow(() -> new CategoryNotFoundException(categoryId));
+                orElseThrow(() -> new CategoryException(CATEGORY_NOT_FOUND));
     }
 
     public String createCategory(String categoryName) {

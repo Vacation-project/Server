@@ -44,6 +44,7 @@ public enum ErrorCode {
      * Product
      */
     PRODUCT_NAME_DUPLICATION(409, "P001", "이미 존재하는 상품 이름입니다."),
+    PRODUCT_NOT_FOUND(400, "P002", "존재하지 않는 상품입니다."),
 
     /**
      * Cart
@@ -60,7 +61,8 @@ public enum ErrorCode {
     /**
      * Category
      */
-    CATEGORY_NAME_DUPLICATION(409, "CT001", "이미 존재하는 카테고리 이름입니다.");
+    CATEGORY_NAME_DUPLICATION(409, "CT001", "이미 존재하는 카테고리 이름입니다."),
+    CATEGORY_NOT_FOUND(400, "CT002", "존재하지 않는 카테고리입니다.");
 
     //Login, Join
 

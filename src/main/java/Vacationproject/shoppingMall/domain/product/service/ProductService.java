@@ -3,7 +3,6 @@ package Vacationproject.shoppingMall.domain.product.service;
 import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.category.service.CategoryService;
 import Vacationproject.shoppingMall.domain.product.exception.ProductException;
-import Vacationproject.shoppingMall.domain.product.exception.ProductNotFoundException;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
 import Vacationproject.shoppingMall.domain.product.repository.ProductRepository;
@@ -18,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.PRODUCT_NAME_DUPLICATION;
+import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.PRODUCT_NOT_FOUND;
 import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 
 @Service
@@ -28,6 +28,11 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
     private final ImageStore imageStore;
+
+    public Product getProduct(final Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+    }
 
     @Transactional
     // 상품 생성
@@ -45,17 +50,15 @@ public class ProductService {
 
     @Transactional
     public ProductMessage deleteProduct(final Long productId) {
-        final Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException(productId));
+        final Product product = getProduct(productId);
         productRepository.delete(product);
 
         return new ProductMessage(true);
     }
 
 
-    public ProductUpdateResponse getProduct(final Long productId) {
-        final Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException(productId));
+    public ProductUpdateResponse getModifyProduct(final Long productId) {
+        final Product product = getProduct(productId);
 
         return ProductUpdateResponse.of(product);
     }
@@ -66,10 +69,8 @@ public class ProductService {
 
         final Long categoryId = updateProduct.productCategoryId();
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException(productId));
+        final Product product = getProduct(productId);
         final Category category = categoryService.getCategory(categoryId);
-
         final List<String> imageUrls = imageStore.storeFiles(updateProduct.images());
 
         /*Dirty Checking 발생*/
@@ -82,18 +83,16 @@ public class ProductService {
     }
 
     public ProductDetailResponse getProductAndReview(final Long productId, final Pageable pageable) {
-        final Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException(productId));
+        final Product product = getProduct(productId);
         final Page<Product> products = productRepository.findByCategoryId(product.getCategory().getId(), pageable);
 
         return ProductDetailResponse.of(product, products);
     }
 
     public List<CategoryProductResponse> getCategoryProducts(final Long categoryId, Pageable pageable) {
-        Page<Product> products = productRepository.findByCategoryId(categoryId, pageable);
-        List<CategoryProductResponse> categoryProductResponseList = products.stream().map(CategoryProductResponse::of).toList();
+        final Page<Product> products = productRepository.findByCategoryId(categoryId, pageable);
 
-        return categoryProductResponseList;
+        return products.stream().map(CategoryProductResponse::of).toList();
     }
 
     private void nameDuplicationCheck(String name) {

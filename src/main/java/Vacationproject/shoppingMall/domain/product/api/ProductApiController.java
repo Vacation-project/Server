@@ -75,7 +75,7 @@ public class ProductApiController {
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
         // authService.checkIsAdmin(principalDetails.getUser())
-        final ProductUpdateResponse productUpdateResponse = productService.getProduct(productId);
+        final ProductUpdateResponse productUpdateResponse = productService.getModifyProduct(productId);
 
         return success(productUpdateResponse);
     }
@@ -113,7 +113,7 @@ public class ProductApiController {
      */
 
     /**
-     * 카테고리별 상품 목록 조회
+     * 카테고리별 상품 목록 조발
      */
     @GetMapping
     @Operation(summary = "카테고리별 상품 조회", description = "CategoryId와 일치하는 카테고리의 상품을 조회합니다.")
