@@ -1,8 +1,7 @@
 package Vacationproject.shoppingMall.domain.product.service;
 
-import Vacationproject.shoppingMall.domain.category.exception.CategoryNotFoundException;
 import Vacationproject.shoppingMall.domain.category.model.Category;
-import Vacationproject.shoppingMall.domain.category.repository.CategoryRepository;
+import Vacationproject.shoppingMall.domain.category.service.CategoryService;
 import Vacationproject.shoppingMall.domain.product.exception.ProductException;
 import Vacationproject.shoppingMall.domain.product.exception.ProductNotFoundException;
 import Vacationproject.shoppingMall.domain.product.model.Product;
@@ -27,7 +26,7 @@ import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
     private final ImageStore imageStore;
 
     @Transactional
@@ -35,8 +34,7 @@ public class ProductService {
     public ProductMessage createProduct(final CreateProductRequest createProductRequest, final Long categoryId, List<MultipartFile> images) throws IOException {
         nameDuplicationCheck(createProductRequest.productName());
 
-        final Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new CategoryNotFoundException(categoryId));
+        final Category category = categoryService.getCategory(categoryId);
         final Product product = productRepository.save(createProductRequest.toEntity(category));
 
         imageStore.storeFiles(images).forEach(imageUrl ->
@@ -70,8 +68,7 @@ public class ProductService {
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
-        final Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new CategoryNotFoundException(categoryId));
+        final Category category = categoryService.getCategory(categoryId);
 
         final List<String> imageUrls = imageStore.storeFiles(updateProduct.images());
 
@@ -92,8 +89,15 @@ public class ProductService {
         return ProductDetailResponse.of(product, products);
     }
 
+    public List<CategoryProductResponse> getCategoryProducts(final Long categoryId, Pageable pageable) {
+        Page<Product> products = productRepository.findByCategoryId(categoryId, pageable);
+        List<CategoryProductResponse> categoryProductResponseList = products.stream().map(CategoryProductResponse::of).toList();
+
+        return categoryProductResponseList;
+    }
+
     private void nameDuplicationCheck(String name) {
-        if (productRepository.existsByName(name)){
+        if (productRepository.existsByName(name)) {
             throw new ProductException(PRODUCT_NAME_DUPLICATION);
         }
     }

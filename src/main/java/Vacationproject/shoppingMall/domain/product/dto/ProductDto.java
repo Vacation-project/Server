@@ -12,6 +12,7 @@ import lombok.Builder;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static Vacationproject.shoppingMall.common.constant.ConstraintConstants.*;
@@ -123,7 +124,7 @@ public class ProductDto {
     @Builder
     public record ProductDetailResponse(
             @Schema(description = PRODUCT_ID)
-            Long id,
+            Long productId,
             @Schema(description = PRODUCT_NAME)
             String productName,
             @Schema(description = PRODUCT_PRICE)
@@ -143,7 +144,7 @@ public class ProductDto {
     ) {
         public static ProductDetailResponse of(Product product, Page<Product> products) {
             return ProductDetailResponse.builder()
-                    .id(product.getId())
+                    .productId(product.getId())
                     .productName(product.getName())
                     .productPrice(product.getPrice())
                     .stockQuantity(product.getStockQuantity())
@@ -152,6 +153,30 @@ public class ProductDto {
                     .imageUrls(product.getProductImageList().stream().map(ProductImage::getImageUrl).toList())
                     .reviewList(product.getReviewList().stream().map(ReviewResponse::of).toList())
                     .relationProductList(products.stream().map(RelationProduct::of).toList())
+                    .build();
+        }
+    }
+
+    @Builder
+    public record CategoryProductResponse(
+            @Schema(description = PRODUCT_ID)
+            Long productId,
+            @Schema(description = PRODUCT_NAME)
+            String productName,
+            @Schema(description = PRODUCT_PRICE)
+            int productPrice,
+            @Schema(description = PRODUCT_CREATE_TIME)
+            LocalDateTime productCreateTime,
+            @Schema(description = PRODUCT_IMAGES)
+            List<String> imageUrls
+    ) {
+        public static CategoryProductResponse of(Product product) {
+            return CategoryProductResponse.builder()
+                    .productId(product.getId())
+                    .productName(product.getName())
+                    .productPrice(product.getPrice())
+                    .productCreateTime(product.getCreatedAt())
+                    .imageUrls(product.getProductImageList().stream().map(ProductImage::getImageUrl).toList())
                     .build();
         }
     }

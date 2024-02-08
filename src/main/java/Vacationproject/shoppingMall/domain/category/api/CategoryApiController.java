@@ -15,7 +15,7 @@ public class CategoryApiController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ApiResponse<String> createCategory(@RequestParam("categoryName") String categoryName) {
+    public ApiResponse<String> createCategory(@RequestParam("categoryName") final String categoryName) {
         return ApiResponse.success(categoryService.createCategory(categoryName));
     }
 }

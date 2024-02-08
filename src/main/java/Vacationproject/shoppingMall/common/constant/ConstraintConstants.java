@@ -18,6 +18,7 @@ public class ConstraintConstants {
     public static final String PRODUCT_CATEGORY_ID = "상품 카테고리 ID";
     public static final String PRODUCT_REVIEWS = "상품 리뷰들";
     public static final String PRODUCT_RELATION_PRODUCTS = "연관 상품";
+    public static final String PRODUCT_CREATE_TIME = "상품 등록 시간";
 
     public static final int PRODUCT_PRICE_MIN = 100;
     public static final int PRODUCT_QUANTITY_MIN_SIZE = 1;

@@ -1,6 +1,7 @@
 package Vacationproject.shoppingMall.domain.category.service;
 
 import Vacationproject.shoppingMall.domain.category.exception.CategoryException;
+import Vacationproject.shoppingMall.domain.category.exception.CategoryNotFoundException;
 import Vacationproject.shoppingMall.domain.category.model.Category;
 import Vacationproject.shoppingMall.domain.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,11 @@ import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.CATE
 @Transactional(readOnly = true)
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+
+    public Category getCategory(Long categoryId) {
+        return categoryRepository.findById(categoryId).
+                orElseThrow(() -> new CategoryNotFoundException(categoryId));
+    }
 
     public String createCategory(String categoryName) {
         nameDuplicationCheck(categoryName);
