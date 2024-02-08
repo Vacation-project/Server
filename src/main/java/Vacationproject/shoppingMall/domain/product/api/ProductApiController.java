@@ -90,13 +90,7 @@ public class ProductApiController {
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) throws IOException {
         // authService.checkIsAdmin(principalDetails.getUser())
-        ProductMessage message = null;
-
-        if (images == null) {
-            message = productService.updateOnlyProduct(productId, updateProductRequest);
-        } else {
-            message = productService.updateProductAndImage(productId, updateProductRequest, images);
-        }
+        ProductMessage message = productService.updateProduct(productId, updateProductRequest, images);
 
         return success(message);
     }
