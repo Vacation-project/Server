@@ -63,20 +63,35 @@ public class ProductService {
         return ProductUpdateResponse.of(product);
     }
 
-    @Transactional
-    public ProductMessage updateProduct(final Long productId, final UpdateProductRequest updateProduct) throws IOException {
+    @Transactional /*상품의 이미지 업데이트 O*/
+    public ProductMessage updateProductAndImage(final Long productId, final UpdateProductRequest updateProduct, List<MultipartFile> images) throws IOException {
         nameDuplicationCheck(updateProduct.productName());
 
         final Long categoryId = updateProduct.productCategoryId();
-
-        final Product product = getProduct(productId);
+        Product product = getProduct(productId);
         final Category category = categoryService.getCategory(categoryId);
-        final List<String> imageUrls = imageStore.storeFiles(updateProduct.images());
+        final List<String> imageUrls = imageStore.storeFiles(images);
+
+        /*Dirty Checking 발생*/
+        product.updateOnImage(
+                updateProduct,
+                imageUrls.stream().map(it -> ProductImage.of(product, it)).toList(),
+                category);
+
+        return new ProductMessage(true);
+    }
+
+    @Transactional /*상품의 이미지 업데이트 X*/
+    public ProductMessage updateOnlyProduct(final Long productId, final UpdateProductRequest updateProduct) throws IOException {
+        nameDuplicationCheck(updateProduct.productName());
+
+        final Long categoryId = updateProduct.productCategoryId();
+        Product product = getProduct(productId);
+        final Category category = categoryService.getCategory(categoryId);
 
         /*Dirty Checking 발생*/
         product.update(
                 updateProduct,
-                imageUrls.stream().map(it -> ProductImage.of(product, it)).toList(),
                 category);
 
         return new ProductMessage(true);

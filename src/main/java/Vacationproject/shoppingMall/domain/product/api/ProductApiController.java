@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -84,11 +85,18 @@ public class ProductApiController {
     @Operation(summary = "상품 수정", description = "수정한 상품 정보와 상품 이미지(images)를 이용하여 상품 정보를 수정합니다.")
     public ApiResponse<ProductMessage> updateProduct(
             @Parameter(name = "productId", description = "Product 의 id", in = ParameterIn.PATH) @PathVariable(name = "productId") final Long productId,
-            @RequestBody @Valid final UpdateProductRequest updateProductRequest
+            @RequestPart(value = "updateProductRequest") @Valid final UpdateProductRequest updateProductRequest,
+            @RequestPart(value = "images", required = false) @Nullable List<MultipartFile> images //이미지를 업데이트 하지 않을 경우, 기존 이미지 사용
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) throws IOException {
         // authService.checkIsAdmin(principalDetails.getUser())
-        final ProductMessage message = productService.updateProduct(productId, updateProductRequest);
+        ProductMessage message = null;
+
+        if (images == null) {
+            message = productService.updateOnlyProduct(productId, updateProductRequest);
+        } else {
+            message = productService.updateProductAndImage(productId, updateProductRequest, images);
+        }
 
         return success(message);
     }
@@ -113,7 +121,7 @@ public class ProductApiController {
      */
 
     /**
-     * 카테고리별 상품 목록 조발
+     * 카테고리별 상품 목록 조회
      */
     @GetMapping
     @Operation(summary = "카테고리별 상품 조회", description = "CategoryId와 일치하는 카테고리의 상품을 조회합니다.")

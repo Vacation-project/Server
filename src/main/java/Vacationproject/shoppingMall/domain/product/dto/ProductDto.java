@@ -10,7 +10,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import org.springframework.data.domain.Page;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -61,22 +60,18 @@ public class ProductDto {
             @Schema(description = PRODUCT_NAME, nullable = false)
             String productName,
             @NotNull
-            @Size(min = PRODUCT_PRICE_MIN)
+            @Min(PRODUCT_PRICE_MIN)
             @Schema(description = PRODUCT_PRICE, nullable = false)
             int productPrice,
             @NotNull
-            @Size(min = PRODUCT_QUANTITY_MIN_SIZE)
+            @Min(PRODUCT_QUANTITY_MIN_SIZE)
             @Schema(description = PRODUCT_STOCK_QUANTITY, nullable = false)
             int stockQuantity,
             @NotNull
             @Size(min = ConstraintConstants.PRODUCT_CONTENT_MIN_SIZE)
             @Schema(description = PRODUCT_CONTENT, nullable = false)
             String productContent,
-//            @NotNull
-//            List<String> imageUrls,
-            @NotNull
-            @Schema(description = PRODUCT_IMAGES, nullable = false)
-            List<MultipartFile> images,
+
             @NotNull
             @Schema(description = PRODUCT_CATEGORY_ID, nullable = false)
             Long productCategoryId
