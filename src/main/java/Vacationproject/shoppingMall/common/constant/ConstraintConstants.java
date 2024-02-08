@@ -7,7 +7,7 @@ public class ConstraintConstants {
     public static final String PRODUCT_ID = "상품 ID";
     public static final String PRODUCT_NAME = "상품 이름";
 
-    public static final String PRODUCT_PRICE = "상품 이름";
+    public static final String PRODUCT_PRICE = "상품 가격";
 
     public static final String PRODUCT_STOCK_QUANTITY = "상품 수량";
 
@@ -17,7 +17,7 @@ public class ConstraintConstants {
 
     public static final String PRODUCT_CATEGORY_ID = "상품 카테고리 ID";
     public static final String PRODUCT_REVIEWS = "상품 리뷰들";
-    public static final String PRODUCT_RELATION_PRODUCTS = "연관 상품";
+    public static final String PRODUCT_RELATION_PRODUCTS = "연관 상품들";
     public static final String PRODUCT_CREATE_TIME = "상품 등록 시간";
 
     public static final int PRODUCT_PRICE_MIN = 100;
