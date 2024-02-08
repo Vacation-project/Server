@@ -65,11 +65,14 @@ public class ProductService {
 
     @Transactional
     public ProductMessage updateProduct(final Long productId, final UpdateProductRequest updateProduct, List<MultipartFile> images) throws IOException {
-        nameDuplicationCheck(updateProduct.productName());
+        Product product = getProduct(productId);
+        if (!product.getName().equals(updateProduct.productName())) {
+            nameDuplicationCheck(updateProduct.productName());
+        }
 
         final Long categoryId = updateProduct.productCategoryId();
 
-        updateProductInf(updateProduct, images, getProduct(productId), categoryService.getCategory(categoryId));
+        updateProductInf(updateProduct, images, product, categoryService.getCategory(categoryId));
 
         return new ProductMessage(true);
     }

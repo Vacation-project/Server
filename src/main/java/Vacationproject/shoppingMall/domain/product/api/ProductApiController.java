@@ -45,7 +45,7 @@ public class ProductApiController {
             @RequestPart(value = "createProductRequest") @Valid final CreateProductRequest createProductRequest,
             @NotNull @RequestPart(value = "images") List<MultipartFile> images,
 //                                     @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @Parameter(name = "categoryId", description = "Category 의 id", in = ParameterIn.PATH)@PathVariable(name = "categoryId") final Long categoryId) throws IOException {
+            @Parameter(name = "categoryId", description = "Category 의 id", in = ParameterIn.PATH) @PathVariable(name = "categoryId") final Long categoryId) throws IOException {
         /* 로그인한 유저가 어드민이 맞는지 검증 */
         // authService.checkIsAdmin(principalDetails.getUser())
 
@@ -96,6 +96,24 @@ public class ProductApiController {
     }
 
     /**
+     * 검색 결과에 따른 상품 리스트
+     */
+
+    /**
+     * 카테고리별 상품 목록 조회
+     */
+    @GetMapping
+    @Operation(summary = "카테고리별 상품 조회", description = "CategoryId와 일치하는 카테고리의 상품을 조회합니다.")
+    public ApiResponse<List<CategoryProductResponse>> getCategoryProduct(
+            @Parameter(name = "categoryId", description = "Category의 id") @RequestParam(name = "categoryId") final Long categoryId,
+            @Parameter(name = "상품 페이징 정보", description = "sort에 정렬하고 싶은 기준을 넣어 전송하면 됩니다.") @PageableDefault(page = 0, size=30, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
+    ) {
+        List<CategoryProductResponse> categoryProductResponseList = productService.getCategoryProducts(categoryId, pageable);
+
+        return success(categoryProductResponseList);
+    }
+
+    /**
      * 상품 삭제
      */
     @DeleteMapping("/{productId}/admin")
@@ -109,23 +127,4 @@ public class ProductApiController {
 
         return success(message);
     }
-
-    /**
-     * 검색 결과에 따른 상품 리스트
-     */
-
-    /**
-     * 카테고리별 상품 목록 조회
-     */
-    @GetMapping
-    @Operation(summary = "카테고리별 상품 조회", description = "CategoryId와 일치하는 카테고리의 상품을 조회합니다.")
-    public ApiResponse<List<CategoryProductResponse>> getCategoryProduct(
-            @Parameter(name = "categoryId", description = "Category의 id") @RequestParam(name = "categoryId") final Long categoryId,
-            @PageableDefault(page = 0, size=30, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
-    ) {
-        List<CategoryProductResponse> categoryProductResponseList = productService.getCategoryProducts(categoryId, pageable);
-
-        return success(categoryProductResponseList);
-    }
-
 }
