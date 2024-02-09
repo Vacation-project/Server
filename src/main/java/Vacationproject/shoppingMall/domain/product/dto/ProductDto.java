@@ -10,7 +10,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
-import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -138,7 +137,7 @@ public class ProductDto {
             @Schema(description = PRODUCT_RELATION_PRODUCTS)
             List<RelationProduct> relationProductList
     ) {
-        public static ProductDetailResponse of(Product product, Page<Product> products) {
+        public static ProductDetailResponse of(Product product, List<Product> products) {
             return ProductDetailResponse.builder()
                     .productId(product.getId())
                     .productName(product.getName())

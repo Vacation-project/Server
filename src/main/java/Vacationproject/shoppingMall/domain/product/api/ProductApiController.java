@@ -36,11 +36,7 @@ public class ProductApiController {
      * 만약 로그인 X or Admin X인 경우 예외 발생
      */
     @PostMapping("/{categoryId}/admin")
-    @Operation(summary = CREATE_PRODUCT_SUMMARY, description = CREATE_PRODUCT_DESCRIPTION
-//            , responses = {
-//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "상품 생성 성공"),
-//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "상품 이름 중복 오류", content = @Content(schema = ErrorResponse.class))}
-    )
+    @Operation(summary = CREATE_PRODUCT_SUMMARY, description = CREATE_PRODUCT_DESCRIPTION)
     public ApiResponse<ProductMessage> createProduct(
             @RequestPart(value = "createProductRequest") @Valid final CreateProductRequest createProductRequest,
             @NotNull @RequestPart(value = "images") List<MultipartFile> images,
@@ -60,9 +56,11 @@ public class ProductApiController {
     @Operation(summary = DETAIL_PRODUCT_SUMMARY, description = DETAIL_PRODUCT_DESCRIPTION)
     public ApiResponse<ProductDetailResponse> getProduct(
             @Parameter(name = PRODUCT_ID, description = PRODUCT_ID_DESCRIPTION, in = ParameterIn.PATH) @PathVariable(name = PRODUCT_ID) final Long productId,
-            @Parameter(name = "상품 페이징 정보", description = "전송하지 않아도 됩니다.") @PageableDefault(page = 0, size=4, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
+//            @Parameter(name = "상품 페이징 정보", description = "전송하지 않아도 됩니다.") @PageableDefault(page = 0, size=4, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
+            @RequestParam(name = "offset", defaultValue = "0") int offset,
+            @RequestParam(name = "limit", defaultValue = "4") int limit
     ) {
-        final ProductDetailResponse productDetailResponse = productService.getProductAndReview(productId, pageable);
+        final ProductDetailResponse productDetailResponse = productService.getProductAndReview(offset, limit, productId);
         return success(productDetailResponse);
     }
 

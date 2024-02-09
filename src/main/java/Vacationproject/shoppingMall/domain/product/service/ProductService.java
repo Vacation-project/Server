@@ -5,6 +5,7 @@ import Vacationproject.shoppingMall.domain.category.service.CategoryService;
 import Vacationproject.shoppingMall.domain.product.exception.ProductException;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
+import Vacationproject.shoppingMall.domain.product.repository.ProductQueryRepository;
 import Vacationproject.shoppingMall.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductQueryRepository productQueryRepository;
     private final CategoryService categoryService;
     private final ImageStore imageStore;
 
@@ -93,10 +95,10 @@ public class ProductService {
         }
     }
 
-    public ProductDetailResponse getProductAndReview(final Long productId, final Pageable pageable) {
+    public ProductDetailResponse getProductAndReview(final int offset, final int limit, final Long productId) {
         final Product product = getProduct(productId);
-        final Page<Product> products = productRepository.findByCategoryIdAndIdNot(product.getCategory().getId(), productId,pageable);
 
+        List<Product> products = productQueryRepository.findProductWithCategory(offset, limit, productId);
         return ProductDetailResponse.of(product, products);
     }
 
