@@ -105,10 +105,9 @@ public class ProductService {
     }
 
     public List<CategoryProductResponse> getCategoryProducts(final Long categoryId, Pageable pageable, String sortKey) {
-        Pageable pageable1 = pagingCondition(pageable, sortKey);
-        System.out.println(pageable1);
+        Pageable updatePageable = pagingCondition(pageable, sortKey);
 
-        final Page<Product> products = productRepository.findByCategoryId(categoryId, pageable1);
+        final Page<Product> products = productRepository.findByCategoryId(categoryId, updatePageable);
 
         return products.stream().map(CategoryProductResponse::of).toList();
     }
