@@ -97,51 +97,52 @@ public class ProductService {
         }
     }
 
-    public ProductDetailResponse getProductAndReview(final int offset, final int limit, final Long productId) {
+    public ProductDetailResponse getProductWithReviewAndRelationProducts(final int offset, final int limit, final Long productId) {
         final Product product = getProduct(productId);
 
-        List<Product> products = productQueryRepository.findProductWithCategory(offset, limit, productId);
+        final List<Product> products = productQueryRepository.findProductWithCategoryAndImages(offset, limit, productId);
         return ProductDetailResponse.of(product, products);
     }
 
-    public List<CategoryProductResponse> getCategoryProducts(final Long categoryId, Pageable pageable, String sortKey) {
-        Pageable updatePageable = pagingCondition(pageable, sortKey);
+    public List<CategoryProductResponse> getCategoryProducts(final Long categoryId, final Pageable pageable, final String sortKey) {
+        final Pageable updatePageable = pagingCondition(pageable, sortKey);
 
         final Page<Product> products = productRepository.findByCategoryId(categoryId, updatePageable);
 
         return products.stream().map(CategoryProductResponse::of).toList();
     }
 
-    private Pageable pagingCondition(Pageable pageable, String sortKey) {
-        switch (sortKey) {
-            case "highPrice" -> pageable = PageRequest.of(
-                    pageable.getPageNumber(),
-                    pageable.getPageSize(),
-                    Sort.by(Sort.Direction.DESC, "price")
-            );
-            case "lowestPrice" -> pageable = PageRequest.of(
-                    pageable.getPageNumber(),
-                    pageable.getPageSize(),
-                    Sort.by("price")
-            );
-            case "popular" -> pageable = PageRequest.of(
-                    pageable.getPageNumber(),
-                    pageable.getPageSize(),
-                    Sort.by(Sort.Direction.DESC, "favoriteCount")
-            );
-            default -> pageable = PageRequest.of(
-                    pageable.getPageNumber(),
-                    pageable.getPageSize(),
-                    Sort.by(Sort.Direction.DESC, "createdAt")
-            );
-        }
-        return pageable;
+    public List<SearchProductResponse> getSearchProduct(final String keyword, final Pageable pageable, final String sortKey) {
+        final Pageable updatePageable = pagingCondition(pageable, sortKey);
+
+        final Page<Product> products = productRepository.findByNameContainingIgnoreCase(keyword, updatePageable);
+
+        return products.stream().map(SearchProductResponse::of).toList();
     }
 
-    private void nameDuplicationCheck(String name) {
+    private Pageable pagingCondition(final Pageable pageable, final String sortKey) {
+        Sort sort;
+        switch (sortKey) {
+            case "highPrice":
+                sort = Sort.by(Sort.Direction.DESC, "price");
+                break;
+            case "lowestPrice":
+                sort = Sort.by("price");
+                break;
+            case "popular":
+                sort = Sort.by(Sort.Direction.DESC, "favoriteCount");
+                break;
+            default:
+                sort = Sort.by(Sort.Direction.DESC, "createdAt");
+                break;
+        }
+        return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+    }
+
+    private void nameDuplicationCheck(final String name) {
         if (productRepository.existsByName(name)) {
             throw new ProductException(PRODUCT_NAME_DUPLICATION);
         }
     }
-    
+
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductQueryRepository {
     private final EntityManager em;
 
-    public List<Product> findProductWithCategory(int offset, int limit, Long productId) {
+    public List<Product> findProductWithCategoryAndImages(int offset, int limit, Long productId) {
         return em.createQuery(
                         "select p from Product p " +
                                 "join fetch p.category c " +

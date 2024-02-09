@@ -59,7 +59,7 @@ public class ProductApiController {
             @RequestParam(name = "offset", defaultValue = "0") int offset,
             @RequestParam(name = "limit", defaultValue = "4") int limit
     ) {
-        final ProductDetailResponse productDetailResponse = productService.getProductAndReview(offset, limit, productId);
+        final ProductDetailResponse productDetailResponse = productService.getProductWithReviewAndRelationProducts(offset, limit, productId);
         return success(productDetailResponse);
     }
 
@@ -93,8 +93,20 @@ public class ProductApiController {
     }
 
     /**
-     * 검색 결과에 따른 상품 리스트
+     * 검색 결과에 따른 상품 조회
      */
+    @GetMapping("/search")
+    @Operation(summary = SEARCH_PRODUCT_SUMMARY, description = SEARCH_PRODUCT_DESCRIPTION)
+    public ApiResponse<List<SearchProductResponse>> searchProduct(
+            @RequestParam(name = "keyword", defaultValue = "") @Nullable String keyword,
+            @Parameter(name = PAGING, description = PAGING_DESCRIPTION) @PageableDefault(page = 0, size = 30) @Nullable final Pageable pageable,
+            @Parameter(name = SORT_KEY, description = SORT_KEY_DESCRIPTION)
+            @RequestParam(name = SORT_KEY, defaultValue = "createdAt") @Nullable final String sortKey
+    ) {
+        List<SearchProductResponse> searchProductResponse = productService.getSearchProduct(keyword, pageable, sortKey);
+
+        return success(searchProductResponse);
+    }
 
     /**
      * 카테고리별 상품 목록 조회
@@ -103,9 +115,9 @@ public class ProductApiController {
     @Operation(summary = CATEGORY_PRODUCT_SUMMARY, description = CATEGORY_PRODUCT_DESCRIPTION)
     public ApiResponse<List<CategoryProductResponse>> getCategoryProduct(
             @Parameter(name = CATEGORY_ID, description = CATEGORY_ID_DESCRIPTION) @RequestParam(name = CATEGORY_ID) final Long categoryId,
-            @Parameter(name = "pageable", description = "sort값 -> 최신순(기본값): createAt, 인기순: popular, 고가순: highPrice, 저가순: lowestPrice") @PageableDefault(page = 0, size = 30) final Pageable pageable,
-            @Parameter(name = "sortKey", description = "최신순(기본값): createdAt, 인기순: popular, 고가순: highPrice, 저가순: lowestPrice")
-            @RequestParam(name = "sortKey", defaultValue = "createdAt") @Nullable String sortKey
+            @Parameter(name = PAGING, description = PAGING_DESCRIPTION) @PageableDefault(page = 0, size = 30) @Nullable final Pageable pageable,
+            @Parameter(name = SORT_KEY, description = SORT_KEY_DESCRIPTION)
+            @RequestParam(name = SORT_KEY, defaultValue = "createdAt") @Nullable final String sortKey
     ) {
         List<CategoryProductResponse> categoryProductResponseList = productService.getCategoryProducts(categoryId, pageable, sortKey);
 

@@ -161,7 +161,7 @@ public class ProductDto {
             @Schema(description = PRODUCT_PRICE)
             int productPrice,
             @Schema(description = PRODUCT_CREATE_TIME)
-            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT_YYYY_MM_DD_HH_MM)
             LocalDateTime productCreateTime,
             @Schema(description = PRODUCT_IMAGES)
             List<String> imageUrls
@@ -195,5 +195,28 @@ public class ProductDto {
         }
     }
 
-
+    @Builder
+    public record SearchProductResponse(
+            @Schema(description = PRODUCT_ID)
+            Long productId,
+            @Schema(description = PRODUCT_NAME)
+            String productName,
+            @Schema(description = PRODUCT_PRICE)
+            int productPrice,
+            @Schema(description = PRODUCT_CREATE_TIME)
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT_YYYY_MM_DD_HH_MM)
+            LocalDateTime productCreateTime,
+            @Schema(description = PRODUCT_IMAGES)
+            List<String> imageUrls
+    ) {
+        public static SearchProductResponse of(Product product) {
+            return SearchProductResponse.builder()
+                    .productId(product.getId())
+                    .productName(product.getName())
+                    .productPrice(product.getPrice())
+                    .productCreateTime(product.getCreatedAt())
+                    .imageUrls(product.getProductImageList().stream().map(ProductImage::getImageUrl).toList())
+                    .build();
+        }
+    }
 }
