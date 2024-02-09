@@ -17,6 +17,15 @@ public class SwaggerConstants {
     public static final String SECURITY_SCHEME_BEARER_FORMAT = "JWT";
     public static final String SECURITY_SCHEME_DESCRIPTION = "JWT 토큰 키를 입력해주세요";
 
+    /**
+     * Common
+     */
+    public static final String PAGING = "pageable";
+    public static final String PAGING_DESCRIPTION = "";
+
+    public static final String SORT_KEY = "sortKey";
+    public static final String SORT_KEY_DESCRIPTION = "최신순(기본값): createdAt, 인기순: popular, 고가순: highPrice, 저가순: lowestPrice";
+
 
     /**
      * Product
@@ -37,6 +46,9 @@ public class SwaggerConstants {
     public static final String DELETE_PRODUCT_DESCRIPTION = "ProductId와 일치하는 상품을 삭제합니다.";
     public static final String CATEGORY_PRODUCT_SUMMARY = "카테고리별 상품 조회";
     public static final String CATEGORY_PRODUCT_DESCRIPTION = "CategoryId와 일치하는 카테고리의 상품을 조회합니다.";
+
+    public static final String SEARCH_PRODUCT_SUMMARY = "상품 검색";
+    public static final String SEARCH_PRODUCT_DESCRIPTION = "검색 결과에 일치하는 상품을 조회합니다.";
 
     /*Product Parameter*/
     public static final String PRODUCT_ID = "productId";
