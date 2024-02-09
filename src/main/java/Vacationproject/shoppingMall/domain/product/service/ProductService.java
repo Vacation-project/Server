@@ -9,7 +9,9 @@ import Vacationproject.shoppingMall.domain.product.repository.ProductQueryReposi
 import Vacationproject.shoppingMall.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,10 +104,39 @@ public class ProductService {
         return ProductDetailResponse.of(product, products);
     }
 
-    public List<CategoryProductResponse> getCategoryProducts(final Long categoryId, Pageable pageable) {
-        final Page<Product> products = productRepository.findByCategoryId(categoryId, pageable);
+    public List<CategoryProductResponse> getCategoryProducts(final Long categoryId, Pageable pageable, String sortKey) {
+        Pageable pageable1 = pagingCondition(pageable, sortKey);
+        System.out.println(pageable1);
+
+        final Page<Product> products = productRepository.findByCategoryId(categoryId, pageable1);
 
         return products.stream().map(CategoryProductResponse::of).toList();
+    }
+
+    private Pageable pagingCondition(Pageable pageable, String sortKey) {
+        switch (sortKey) {
+            case "highPrice" -> pageable = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(Sort.Direction.DESC, "price")
+            );
+            case "lowestPrice" -> pageable = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by("price")
+            );
+            case "popular" -> pageable = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(Sort.Direction.DESC, "favoriteCount")
+            );
+            default -> pageable = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(Sort.Direction.DESC, "createdAt")
+            );
+        }
+        return pageable;
     }
 
     private void nameDuplicationCheck(String name) {
@@ -113,4 +144,5 @@ public class ProductService {
             throw new ProductException(PRODUCT_NAME_DUPLICATION);
         }
     }
+    
 }

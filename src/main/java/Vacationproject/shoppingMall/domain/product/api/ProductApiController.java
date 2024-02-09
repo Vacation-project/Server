@@ -11,7 +11,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -104,9 +103,12 @@ public class ProductApiController {
     @Operation(summary = CATEGORY_PRODUCT_SUMMARY, description = CATEGORY_PRODUCT_DESCRIPTION)
     public ApiResponse<List<CategoryProductResponse>> getCategoryProduct(
             @Parameter(name = CATEGORY_ID, description = CATEGORY_ID_DESCRIPTION) @RequestParam(name = CATEGORY_ID) final Long categoryId,
-            @Parameter(name = "상품 페이징 정보", description = "sort에 정렬하고 싶은 기준을 넣어 전송하면 됩니다.") @PageableDefault(page = 0, size=30, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
+            @Parameter(name = "상품 페이징 정보", description = "sort값 -> 최신순(기본값): createAt, 인기순: popular, 고가순: highPrice, 저가순: lowestPrice") @PageableDefault(page = 0, size = 30) final Pageable pageable,
+            @Parameter(name = "페이징 기준", description = "최신순(기본값): createdAt, 인기순: popular, 고가순: highPrice, 저가순: lowestPrice")
+            @RequestParam(name = "sortKey", defaultValue = "createdAt") @Nullable String sortKey
     ) {
-        List<CategoryProductResponse> categoryProductResponseList = productService.getCategoryProducts(categoryId, pageable);
+        System.out.println("####: " + sortKey);
+        List<CategoryProductResponse> categoryProductResponseList = productService.getCategoryProducts(categoryId, pageable, sortKey);
 
         return success(categoryProductResponseList);
     }

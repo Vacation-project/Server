@@ -17,7 +17,8 @@ public class ProductQueryRepository {
                         "select p from Product p " +
                                 "join fetch p.category c " +
                                 "join fetch p.productImageList i " +
-                                "where p.id != :excludedProductId", Product.class)
+                                "where p.id != :excludedProductId " +
+                                "order by p.createdAt desc", Product.class)
                 .setParameter("excludedProductId", productId)
                 .setFirstResult(offset)
                 .setMaxResults(limit)

@@ -59,6 +59,8 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Favorite> favoriteList = new ArrayList<>();
 
+    private int favoriteCount;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "categoty_id")
     private Category category;
@@ -97,5 +99,12 @@ public class Product extends BaseEntity {
         this.category = category;
         this.productImageList.clear();
         this.productImageList.addAll(productImages);
+    }
+
+    public void addFavorite() {
+        this.favoriteCount += 1;
+    }
+    public void decreaseFavorite() {
+        this.favoriteCount -= 1;
     }
 }
