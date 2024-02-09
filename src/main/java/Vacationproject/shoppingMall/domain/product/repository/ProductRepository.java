@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Page<Product> findByCategoryId(Long categoryId, Pageable pageable);
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.productImageList WHERE p.category.id = :categoryId")
+    Page<Product> findByCategoryId(@Param("categoryId") Long categoryId, Pageable pageable);
 
     Page<Product> findByCategoryIdAndIdNot(Long categoryId, Long productId, Pageable pageable);
 

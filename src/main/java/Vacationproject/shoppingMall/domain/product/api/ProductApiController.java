@@ -115,7 +115,7 @@ public class ProductApiController {
     @Operation(summary = CATEGORY_PRODUCT_SUMMARY, description = CATEGORY_PRODUCT_DESCRIPTION)
     public ApiResponse<List<CategoryProductResponse>> getCategoryProduct(
             @Parameter(name = CATEGORY_ID, description = CATEGORY_ID_DESCRIPTION) @RequestParam(name = CATEGORY_ID) final Long categoryId,
-            @Parameter(name = PAGING, description = PAGING_DESCRIPTION) @PageableDefault(page = 0, size = 30) @Nullable final Pageable pageable,
+            @Parameter(name = PAGING, description = PAGING_DESCRIPTION) @PageableDefault(page = 0, size = 3) @Nullable final Pageable pageable,
             @Parameter(name = SORT_KEY, description = SORT_KEY_DESCRIPTION)
             @RequestParam(name = SORT_KEY, defaultValue = "createdAt") @Nullable final String sortKey
     ) {
