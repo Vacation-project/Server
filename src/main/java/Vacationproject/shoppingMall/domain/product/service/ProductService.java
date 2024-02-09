@@ -95,7 +95,7 @@ public class ProductService {
 
     public ProductDetailResponse getProductAndReview(final Long productId, final Pageable pageable) {
         final Product product = getProduct(productId);
-        final Page<Product> products = productRepository.findByCategoryId(product.getCategory().getId(), pageable);
+        final Page<Product> products = productRepository.findByCategoryIdAndIdNot(product.getCategory().getId(), productId,pageable);
 
         return ProductDetailResponse.of(product, products);
     }

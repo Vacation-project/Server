@@ -51,6 +51,6 @@ public class SwaggerConstants {
     /*Category Operation*/
 
     /*Category Parameter*/
-    public static final String CATEGORY_ID = "productId";
-    public static final String CATEGORY_ID_DESCRIPTION = "Product 의 ID";
+    public static final String CATEGORY_ID = "categoryId";
+    public static final String CATEGORY_ID_DESCRIPTION = "Category 의 ID";
 }
