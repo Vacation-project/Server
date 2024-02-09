@@ -103,11 +103,10 @@ public class ProductApiController {
     @Operation(summary = CATEGORY_PRODUCT_SUMMARY, description = CATEGORY_PRODUCT_DESCRIPTION)
     public ApiResponse<List<CategoryProductResponse>> getCategoryProduct(
             @Parameter(name = CATEGORY_ID, description = CATEGORY_ID_DESCRIPTION) @RequestParam(name = CATEGORY_ID) final Long categoryId,
-            @Parameter(name = "상품 페이징 정보", description = "sort값 -> 최신순(기본값): createAt, 인기순: popular, 고가순: highPrice, 저가순: lowestPrice") @PageableDefault(page = 0, size = 30) final Pageable pageable,
-            @Parameter(name = "페이징 기준", description = "최신순(기본값): createdAt, 인기순: popular, 고가순: highPrice, 저가순: lowestPrice")
+            @Parameter(name = "pageable", description = "sort값 -> 최신순(기본값): createAt, 인기순: popular, 고가순: highPrice, 저가순: lowestPrice") @PageableDefault(page = 0, size = 30) final Pageable pageable,
+            @Parameter(name = "sortKey", description = "최신순(기본값): createdAt, 인기순: popular, 고가순: highPrice, 저가순: lowestPrice")
             @RequestParam(name = "sortKey", defaultValue = "createdAt") @Nullable String sortKey
     ) {
-        System.out.println("####: " + sortKey);
         List<CategoryProductResponse> categoryProductResponseList = productService.getCategoryProducts(categoryId, pageable, sortKey);
 
         return success(categoryProductResponseList);
