@@ -24,7 +24,6 @@ public class ProductDto {
      * Request
      */
     @Builder
-
     public record CreateProductRequest(
             @NotNull
             @Schema(description = PRODUCT_NAME, nullable = false)
@@ -216,6 +215,33 @@ public class ProductDto {
                     .productPrice(product.getPrice())
                     .productCreateTime(product.getCreatedAt())
                     .imageUrls(product.getProductImageList().stream().map(ProductImage::getImageUrl).toList())
+                    .build();
+        }
+    }
+
+    @Builder
+    public record HomeProductResponse(
+            @Schema(description = PRODUCT_ID)
+            Long productId,
+            @Schema(description = PRODUCT_NAME)
+            String productName,
+            @Schema(description = PRODUCT_PRICE)
+            int productPrice,
+            @Schema(description = PRODUCT_CREATE_TIME)
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT_YYYY_MM_DD_HH_MM)
+            LocalDateTime productCreateTime,
+            @Schema(description = PRODUCT_IMAGES)
+            List<String> imageUrls
+    ) {
+        public static HomeProductResponse of(Product product) {
+            return HomeProductResponse.builder()
+                    .productId(product.getId())
+                    .productName(product.getName())
+                    .productPrice(product.getPrice())
+                    .productCreateTime(product.getCreatedAt())
+                    .imageUrls(product.getProductImageList().stream().map(
+                            ProductImage::getImageUrl
+                    ).toList())
                     .build();
         }
     }

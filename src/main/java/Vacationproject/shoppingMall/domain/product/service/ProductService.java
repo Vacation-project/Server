@@ -38,6 +38,13 @@ public class ProductService {
                 .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
     }
 
+    public List<HomeProductResponse> getMainPageProduct(Pageable pageable, String sortKey) {
+        Pageable updatePageable = pagingCondition(pageable, sortKey);
+        Page<Product> products = productRepository.findMainPageProduct(updatePageable);
+
+        return products.stream().map(HomeProductResponse::of).toList();
+    }
+
     @Transactional
     // 상품 생성
     public ProductMessage createProduct(final CreateProductRequest createProductRequest, final Long categoryId, List<MultipartFile> images) throws IOException {
@@ -144,5 +151,4 @@ public class ProductService {
             throw new ProductException(PRODUCT_NAME_DUPLICATION);
         }
     }
-
 }

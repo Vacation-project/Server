@@ -26,6 +26,14 @@ public class SwaggerConstants {
     public static final String SORT_KEY = "sortKey";
     public static final String SORT_KEY_DESCRIPTION = "최신순(기본값): createdAt, 인기순: popular, 고가순: highPrice, 저가순: lowestPrice";
 
+    /**
+     * Home
+     */
+    public static final String TAG_HOME = "Home";
+    public static final String TAG_HOME_DESCRIPTION = "Home API";
+    public static final String HOME_SUMMARY = "메인 페이지";
+    public static final String HOME_DESCRIPTION = "메인 페이지 정보를 가져옵니다.";
+
 
     /**
      * Product

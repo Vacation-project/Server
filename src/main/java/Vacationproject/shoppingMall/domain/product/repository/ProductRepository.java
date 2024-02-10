@@ -13,10 +13,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByCategoryIdAndIdNot(Long categoryId, Long productId, Pageable pageable);
 
+    // 대소문자를 구분하지 않고 검색
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.productImageList WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Product> findByNameContainingIgnoreCase(@Param("keyword") String keyword, Pageable pageable);
 
-    Page<Product> findByNameContaining(@Param("keyword") String keyword, Pageable pageable);
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.productImageList")
+    Page<Product> findMainPageProduct(Pageable pageable);
 
     boolean existsByName(String name);
 }
