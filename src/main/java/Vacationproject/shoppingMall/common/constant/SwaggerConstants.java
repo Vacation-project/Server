@@ -67,6 +67,10 @@ public class SwaggerConstants {
      */
     public static final String TAG_CATEGORY = "Category";
     public static final String TAG_CATEGORY_DESCRIPTION = "Category API";
+    public static final String CREATE_CATEGORY_SUMMARY = "카테고리 생성";
+    public static final String CREATE_CATEGORY_DESCRIPTION = "카테고리를 생성합니다.";
+    public static final String FIND_CATEGORY_SUMMARY = "카테고리 조회";
+    public static final String FIND_CATEGORY_DESCRIPTION = "카테고리를 조회합니다.";
 
     /*Category Operation*/
 

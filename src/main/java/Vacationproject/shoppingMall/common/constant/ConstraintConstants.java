@@ -33,6 +33,12 @@ public class ConstraintConstants {
     public static final int PRODUCT_CONTENT_MIN_SIZE = 10;
 
     /**
+     * Category
+     */
+    public static final String CATEGORY_ID = "카테고리 ID";
+    public static final String CATEGORY_NAME = "카테고리 이름";
+
+    /**
      * Review
      */
     public static final String REVIEW_USER_NICKNAME = "리뷰 회원 닉네임";
