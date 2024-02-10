@@ -1,16 +1,17 @@
 package Vacationproject.shoppingMall.domain.product.service;
 
-import Vacationproject.shoppingMall.domain.category.exception.CategoryNotFoundException;
 import Vacationproject.shoppingMall.domain.category.model.Category;
-import Vacationproject.shoppingMall.domain.category.repository.CategoryRepository;
+import Vacationproject.shoppingMall.domain.category.service.CategoryService;
 import Vacationproject.shoppingMall.domain.product.exception.ProductException;
-import Vacationproject.shoppingMall.domain.product.exception.ProductNotFoundException;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
+import Vacationproject.shoppingMall.domain.product.repository.ProductQueryRepository;
 import Vacationproject.shoppingMall.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.PRODUCT_NAME_DUPLICATION;
+import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.PRODUCT_NOT_FOUND;
 import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 
 @Service
@@ -27,16 +29,28 @@ import static Vacationproject.shoppingMall.domain.product.dto.ProductDto.*;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
+    private final ProductQueryRepository productQueryRepository;
+    private final CategoryService categoryService;
     private final ImageStore imageStore;
+
+    public Product getProduct(final Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+    }
+
+    public List<HomeProductResponse> getMainPageProduct(Pageable pageable, String sortKey) {
+        Pageable updatePageable = pagingCondition(pageable, sortKey);
+        Page<Product> products = productRepository.findMainPageProduct(updatePageable);
+
+        return products.stream().map(HomeProductResponse::of).toList();
+    }
 
     @Transactional
     // 상품 생성
     public ProductMessage createProduct(final CreateProductRequest createProductRequest, final Long categoryId, List<MultipartFile> images) throws IOException {
         nameDuplicationCheck(createProductRequest.productName());
 
-        final Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new CategoryNotFoundException(categoryId));
+        final Category category = categoryService.getCategory(categoryId);
         final Product product = productRepository.save(createProductRequest.toEntity(category));
 
         imageStore.storeFiles(images).forEach(imageUrl ->
@@ -47,53 +61,93 @@ public class ProductService {
 
     @Transactional
     public ProductMessage deleteProduct(final Long productId) {
-        final Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException(productId));
+        final Product product = getProduct(productId);
         productRepository.delete(product);
 
         return new ProductMessage(true);
     }
 
 
-    public ProductUpdateResponse getProduct(final Long productId) {
-        final Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException(productId));
+    public ProductUpdateResponse getModifyProduct(final Long productId) {
+        final Product product = getProduct(productId);
 
         return ProductUpdateResponse.of(product);
     }
 
     @Transactional
-    public ProductMessage updateProduct(final Long productId, final UpdateProductRequest updateProduct) throws IOException {
-        nameDuplicationCheck(updateProduct.productName());
+    public ProductMessage updateProduct(final Long productId, final UpdateProductRequest updateProduct, List<MultipartFile> images) throws IOException {
+        Product product = getProduct(productId);
+        if (!product.getName().equals(updateProduct.productName())) {
+            nameDuplicationCheck(updateProduct.productName());
+        }
 
         final Long categoryId = updateProduct.productCategoryId();
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException(productId));
-        final Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new CategoryNotFoundException(categoryId));
-
-        final List<String> imageUrls = imageStore.storeFiles(updateProduct.images());
-
-        /*Dirty Checking 발생*/
-        product.update(
-                updateProduct,
-                imageUrls.stream().map(it -> ProductImage.of(product, it)).toList(),
-                category);
+        updateProductInf(updateProduct, images, product, categoryService.getCategory(categoryId));
 
         return new ProductMessage(true);
     }
 
-    public ProductDetailResponse getProductAndReview(final Long productId, final Pageable pageable) {
-        final Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException(productId));
-        final Page<Product> products = productRepository.findByCategoryId(product.getCategory().getId(), pageable);
+    private void updateProductInf(UpdateProductRequest updateProduct, List<MultipartFile> images, Product product, Category category) throws IOException {
+        if (images == null) {
+            /*Dirty Checking*/
+            product.update(
+                    updateProduct,
+                    category);
+        } else {
+            final List<String> imageUrls = imageStore.storeFiles(images);
+            /*Dirty Checking*/
+            product.updateOnImage(
+                    updateProduct,
+                    imageUrls.stream().map(it -> ProductImage.of(product, it)).toList(),
+                    category);
+        }
+    }
 
+    public ProductDetailResponse getProductWithReviewAndRelationProducts(final int offset, final int limit, final Long productId) {
+        final Product product = getProduct(productId);
+
+        final List<Product> products = productQueryRepository.findProductWithCategoryAndImages(offset, limit, productId);
         return ProductDetailResponse.of(product, products);
     }
 
-    private void nameDuplicationCheck(String name) {
-        if (productRepository.existsByName(name)){
+    public List<CategoryProductResponse> getCategoryProducts(final Long categoryId, final Pageable pageable, final String sortKey) {
+        final Pageable updatePageable = pagingCondition(pageable, sortKey);
+
+        final Page<Product> products = productRepository.findByCategoryId(categoryId, updatePageable);
+
+        return products.stream().map(CategoryProductResponse::of).toList();
+    }
+
+    public List<SearchProductResponse> getSearchProduct(final String keyword, final Pageable pageable, final String sortKey) {
+        final Pageable updatePageable = pagingCondition(pageable, sortKey);
+
+        final Page<Product> products = productRepository.findByNameContainingIgnoreCase(keyword, updatePageable);
+
+        return products.stream().map(SearchProductResponse::of).toList();
+    }
+
+    private Pageable pagingCondition(final Pageable pageable, final String sortKey) {
+        Sort sort;
+        switch (sortKey) {
+            case "highPrice":
+                sort = Sort.by(Sort.Direction.DESC, "price");
+                break;
+            case "lowestPrice":
+                sort = Sort.by("price");
+                break;
+            case "popular":
+                sort = Sort.by(Sort.Direction.DESC, "favoriteCount");
+                break;
+            default:
+                sort = Sort.by(Sort.Direction.DESC, "createdAt");
+                break;
+        }
+        return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+    }
+
+    private void nameDuplicationCheck(final String name) {
+        if (productRepository.existsByName(name)) {
             throw new ProductException(PRODUCT_NAME_DUPLICATION);
         }
     }

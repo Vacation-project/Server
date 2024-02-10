@@ -46,18 +46,20 @@ public class Product extends BaseEntity {
     @Size(min = PRODUCT_CONTENT_MIN_SIZE)
     private String content; //상품 설명
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval=true) //orphanRemoval: 참조를 제거하면 자동으로 데이터베이스에서 삭제
     private List<ProductImage> productImageList = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE) // 상품이 삭제돠면 리뷰들도 삭제
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval=true) // 상품이 삭제돠면 리뷰들도 삭제
     private List<Review> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Favorite> favoriteList = new ArrayList<>();
+
+    private int favoriteCount;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "categoty_id")
@@ -76,15 +78,33 @@ public class Product extends BaseEntity {
     public void addProductImage(ProductImage productImage) {
         productImageList.add(productImage);
     }
+    public void addProductImages(List<ProductImage> productImages) {
+        productImageList.addAll(productImages);
+    }
 
     /* Using Method */
-    public void update(UpdateProductRequest updateProductRequest, List<ProductImage> productImages,Category category) {
+    public void update(UpdateProductRequest updateProductRequest, Category category) {
         this.name = updateProductRequest.productName();
         this.price = updateProductRequest.productPrice();
         this.stockQuantity = updateProductRequest.stockQuantity();
-        this.content = updateProductRequest.productComment();
+        this.content = updateProductRequest.productContent();
+        this.category = category;
+    }
+
+    public void updateOnImage(UpdateProductRequest updateProductRequest, List<ProductImage> productImages,Category category) {
+        this.name = updateProductRequest.productName();
+        this.price = updateProductRequest.productPrice();
+        this.stockQuantity = updateProductRequest.stockQuantity();
+        this.content = updateProductRequest.productContent();
         this.category = category;
         this.productImageList.clear();
         this.productImageList.addAll(productImages);
+    }
+
+    public void addFavorite() {
+        this.favoriteCount += 1;
+    }
+    public void decreaseFavorite() {
+        this.favoriteCount -= 1;
     }
 }

@@ -1,9 +1,13 @@
 package Vacationproject.shoppingMall.domain.review.dto;
 
 import Vacationproject.shoppingMall.domain.review.model.Review;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+
+import static Vacationproject.shoppingMall.common.constant.ConstraintConstants.*;
 
 public class ReviewDto {
     /**
@@ -15,10 +19,16 @@ public class ReviewDto {
      */
     @Builder
     public record ReviewResponse(
+            @Schema(description = REVIEW_USER_NICKNAME)
             String userNickName,
+            @Schema(description = REVIEW_TITLE)
             String reviewTitle,
+            @Schema(description = REVIEW_COMMENT)
             String reviewComment,
+            @Schema(description = REVIEW_CREATE_DATE)
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
             LocalDateTime reviewDate,
+            @Schema(description = REVIEW_RATING)
             int rating
     ) {
         public static ReviewResponse of(Review review) {
