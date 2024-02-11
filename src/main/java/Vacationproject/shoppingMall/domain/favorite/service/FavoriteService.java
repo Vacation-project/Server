@@ -1,7 +1,10 @@
 package Vacationproject.shoppingMall.domain.favorite.service;
 
+import Vacationproject.shoppingMall.domain.favorite.model.Favorite;
 import Vacationproject.shoppingMall.domain.favorite.repository.FavoriteRepository;
+import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.service.ProductService;
+import Vacationproject.shoppingMall.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,5 +30,30 @@ public class FavoriteService {
 //        return productResponses;
 //    }
 
+//    public FavoriteMessage addFavorite(Long userId, Long productId) {
+//        User user = userService.getUser(userId);
+//        Product product = productService.getProduct(productId);
 
+//
+//        addOrDecreaseFavorite(user, product);
+//
+//        return new FavoriteMessage(true);
+//    }
+
+    /**
+     * TODO 상품과 회원에도 찜과의 연관관계 메서드 추가
+     */
+    private void addOrDecreaseFavorite(User user, Product product) {
+        if (!favoriteRepository.existsByUserAndProduct(user, product)) {
+            Favorite favorite = Favorite.builder()
+                    .user(user)
+                    .product(product)
+                    .build();
+            favoriteRepository.save(favorite);
+            product.addFavorite();
+        } else {
+            product.decreaseFavorite();
+            favoriteRepository.deleteByUserAndProduct(user, product);
+        }
+    }
 }
