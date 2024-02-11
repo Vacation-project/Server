@@ -100,7 +100,7 @@ public class ProductDto {
             @Schema(description = PRODUCT_CONTENT)
             String productContent,
             @Schema(description = PRODUCT_IMAGES)
-            List<String> imageUrl
+            List<String> imageUrls
     ) {
         public static ProductUpdateResponse of(Product product) {
             return ProductUpdateResponse.builder()
@@ -108,7 +108,7 @@ public class ProductDto {
                     .productPrice(product.getPrice())
                     .stockQuantity(product.getStockQuantity())
                     .productContent(product.getContent())
-                    .imageUrl(product.getProductImageList().stream().map(ProductImage::getImageUrl).toList())
+                    .imageUrls(product.getProductImageList().stream().map(ProductImage::getImageUrl).toList())
                     .build();
         }
     }
@@ -218,6 +218,29 @@ public class ProductDto {
                     .build();
         }
     }
+
+    @Builder
+    public record UserFavoriteProductResponse(
+            @Schema(description = PRODUCT_ID)
+            Long productId,
+            @Schema(description = PRODUCT_NAME)
+            String productName,
+            @Schema(description = PRODUCT_PRICE)
+            int productPrice,
+            @Schema(description = PRODUCT_IMAGES)
+            List<String> imageUrls
+    ) {
+        public static UserFavoriteProductResponse of(Product product) {
+            return UserFavoriteProductResponse.builder()
+                    .productId(product.getId())
+                    .productName(product.getName())
+                    .productPrice(product.getPrice())
+                    .imageUrls(product.getProductImageList().stream()
+                            .map(ProductImage::getImageUrl).toList())
+                    .build();
+        }
+    }
+
 
     @Builder
     public record HomeProductResponse(

@@ -83,4 +83,10 @@ public class SwaggerConstants {
      */
     public static final String TAG_REVIEW = "Review";
     public static final String TAG_REVIEW_DESCRIPTION = "Review API";
+
+    /**
+     * Favorite
+     */
+    public static final String TAG_FAVORITE = "Favorite";
+    public static final String TAG_FAVORITE_DESCRIPTION = "Favorite API";
 }

@@ -4,6 +4,7 @@ import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.user.model.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,8 +23,6 @@ public class Favorite {
     @Column(name = "favorite_id")
     private Long id;
 
-    private int count; // 찜 갯수 노출하기 위함
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -32,5 +31,10 @@ public class Favorite {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    // 카테고리와의 관계를 매핑하는 부분이고 기타 메소드
+    /*연관관계 메서드*/
+    @Builder
+    public Favorite(User user, Product product) {
+        this.user = user;
+        this.product = product;
+    }
 }
