@@ -5,12 +5,10 @@ import Vacationproject.shoppingMall.domain.cart.model.Cart;
 import Vacationproject.shoppingMall.domain.embeddable.Address;
 import Vacationproject.shoppingMall.domain.review.model.Review;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
