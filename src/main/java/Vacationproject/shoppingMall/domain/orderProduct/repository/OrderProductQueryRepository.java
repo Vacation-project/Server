@@ -17,6 +17,7 @@ public class OrderProductQueryRepository {
         return em.createQuery(
                         "select op from OrderProduct op " +
                                 "join fetch op.product p " +
+                                "join fetch p.productImageList pi " +
                                 "join fetch op.order o " +  // 여기서의 join fetch는 필요하지 않습니다.
                                 "join fetch o.user u " +   // 없어도 됨
                                 "where op.reviewCheck = false and u.id = :userId", OrderProduct.class)

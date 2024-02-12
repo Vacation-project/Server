@@ -47,4 +47,9 @@ public class ConstraintConstants {
     public static final String REVIEW_CREATE_DATE = "리뷰 작성 시간";
     public static final String REVIEW_RATING = "리뷰 별점";
 
+    /**
+     * OrderProduct
+     */
+    public static final String ORDER_PRODUCT_ID = "주문 상품 ID";
+    public static final String ORDER_PRODUCT_QUANTITY = "주문 상품 갯수";
 }
