@@ -46,4 +46,19 @@ public class OrderProductDto {
                     .build();
         }
     }
+
+    @Builder
+    public record OrderProductReviewResponse(
+            @Schema(name = ORDER_PRODUCT_ID)
+            Long orderProductId,
+            @Schema(name = PRODUCT_NAME)
+            String orderProductName
+    ) {
+        public static OrderProductReviewResponse of(OrderProduct orderProduct) {
+            return OrderProductReviewResponse.builder()
+                    .orderProductId(orderProduct.getId())
+                    .orderProductName(orderProduct.getProduct().getName())
+                    .build();
+        }
+    }
 }

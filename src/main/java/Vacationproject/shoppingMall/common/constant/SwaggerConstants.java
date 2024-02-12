@@ -79,7 +79,7 @@ public class SwaggerConstants {
     public static final String CATEGORY_ID_DESCRIPTION = "Category 의 ID";
 
     /**
-     * Revuew
+     * Review
      */
     public static final String TAG_REVIEW = "Review";
     public static final String TAG_REVIEW_DESCRIPTION = "Review API";
@@ -89,4 +89,14 @@ public class SwaggerConstants {
      */
     public static final String TAG_FAVORITE = "Favorite";
     public static final String TAG_FAVORITE_DESCRIPTION = "Favorite API";
+
+    /**
+     * OrderProduct
+     */
+
+    /*OrderProduct Operation*/
+
+    /*OrderProduct Parameter*/
+    public static final String ORDER_PRODUCT_Id = "orderProductId";
+
 }

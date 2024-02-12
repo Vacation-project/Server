@@ -24,4 +24,14 @@ public class OrderProductQueryRepository {
                 .setParameter("userId", userId)
                 .getResultList();
     }
+
+    public OrderProduct findOrderProductAndProduct(Long orderProductId) {
+        return em.createQuery(
+                        "select op from OrderProduct op " +
+                                "join fetch op.product p " +
+                                "where op.id = :orderProductId", OrderProduct.class)
+                .setParameter("orderProductId", orderProductId)
+                .getSingleResult();
+        )
+    }
 }

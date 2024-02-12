@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static Vacationproject.shoppingMall.domain.orderProduct.dto.OrderProductDto.NotWrittenReviewOrderProduct;
+import static Vacationproject.shoppingMall.domain.orderProduct.dto.OrderProductDto.OrderProductReviewResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +23,11 @@ public class ReviewService {
 
         return orderProducts
                 .stream().map(it -> NotWrittenReviewOrderProduct.of(it, it.getProduct())).toList();
+    }
+
+    public OrderProductReviewResponse getOrderProductName(Long orderProductId) {
+        OrderProduct orderProduct = orderProductQueryRepository.findOrderProductAndProduct(orderProductId);
+        return OrderProductReviewResponse.of(orderProduct);
+
     }
 }
