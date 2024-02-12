@@ -13,7 +13,7 @@ public class OrderProductQueryRepository {
     private final EntityManager em;
 
     /*회원이 구매한 orderProduct 중 리뷰를 작성하지 않은 OrderProduct 조회*/
-    public List<OrderProduct> findNotWrittenReviewOrderProducts(Long userId) {
+    public List<OrderProduct> findNotWrittenReviewOrderProducts(Long userId, int offset, int limit) {
         return em.createQuery(
                         "select op from OrderProduct op " +
                                 "join fetch op.product p " +
@@ -22,6 +22,8 @@ public class OrderProductQueryRepository {
                                 "join fetch o.user u " +   // 없어도 됨
                                 "where op.reviewCheck = false and u.id = :userId", OrderProduct.class)
                 .setParameter("userId", userId)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
                 .getResultList();
     }
 
@@ -32,6 +34,5 @@ public class OrderProductQueryRepository {
                                 "where op.id = :orderProductId", OrderProduct.class)
                 .setParameter("orderProductId", orderProductId)
                 .getSingleResult();
-        )
     }
 }

@@ -18,8 +18,8 @@ public class ReviewService {
     private final OrderProductQueryRepository orderProductQueryRepository;
 
     /* 리뷰가 작성되지 않은 주문 상품 정보 가져오기 */
-    public List<NotWrittenReviewOrderProduct> notWrittenReviews(Long userId) {
-        List<OrderProduct> orderProducts = orderProductQueryRepository.findNotWrittenReviewOrderProducts(userId);
+    public List<NotWrittenReviewOrderProduct> notWrittenReviews(Long userId, int offset, int limit) {
+        List<OrderProduct> orderProducts = orderProductQueryRepository.findNotWrittenReviewOrderProducts(userId, offset, limit);
 
         return orderProducts
                 .stream().map(it -> NotWrittenReviewOrderProduct.of(it, it.getProduct())).toList();
