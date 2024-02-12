@@ -1,8 +1,5 @@
-package Vacationproject.shoppingMall.domain.user.security;
+package Vacationproject.shoppingMall.domain.user.security.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -20,6 +17,7 @@ public class JwtTokenUtil {
     @Value("${jwt.expiration}")
     private long validityInMilliseconds;
 
+    // Claims 클래스를 구현해서
     public String createToken(String username, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", roles);

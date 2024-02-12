@@ -4,13 +4,20 @@ import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.cart.model.Cart;
 import Vacationproject.shoppingMall.domain.embeddable.Address;
 import Vacationproject.shoppingMall.domain.review.model.Review;
+import Vacationproject.shoppingMall.domain.user.dto.UserDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+/**
+ * Admin 클래스를 따로 뺏음. 만약, UserStatus 에서 enum 을 쓰고, user와 admin을 나눈다면 ? -> 굳이 그럴 필요 x
+ */
 
 @Getter
 @Entity
@@ -25,25 +32,29 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    private String token;
-    @NotNull
-    private String loginId;
-    @NotNull
-    private String password;
-    @NotNull
-    private String nickName;
+    @Enumerated(EnumType.STRING) private Role role; // 역할. Enum 타입
+    private String email;
+    @NotNull private String password;
+
+    private String socialEmail;
+
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
+    @NotNull private String loginId;
+    @NotNull @Column(length = 20) private String nickname;
 
     private String gender;
 
-    @Embedded
-    private Address address;
-
-    @Enumerated(EnumType.STRING)
-    private Role role; // 역할. Enum 타입
+    @Embedded private Address address;
 
     @OneToOne(fetch = FetchType.LAZY)
     private Cart cart; //TODO
 
+    private LocalDateTime lastLoginDate;
+    private String token;
+
+
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     // 회원이 삭제되면 리뷰들도 삭제되어야 하기 때문에 양방향으로 설정
     private List<Review> reviewList = new ArrayList<>();
@@ -65,12 +76,29 @@ public class User extends BaseEntity {
         this.loginId = loginId;
     }
 
-    public void setNickName(String nickName) {
+    public void setNickname(String nickName) {
         if (nickName == null || nickName.trim().isEmpty()) {
             throw new IllegalArgumentException("NickName cannot be null or empty");
         }
-        this.nickName = nickName;
+        this.nickname = nickName;
     }
 
+    public void updateLastLoginDate() {
+        this.lastLoginDate = LocalDateTime.now();
+    }
+    public void updateUserInfo(UserDto.UpdateUserInfoRequest updateUserInfoRequest) {
+          this.email = updateUserInfoRequest.email();
+          this.nickname = updateUserInfoRequest.nickname();
+      }
 
+    public String getUsername() {
+        // TODO: 구현
+        return null;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        // TODO: 구현
+        return null;
+    }
 }
