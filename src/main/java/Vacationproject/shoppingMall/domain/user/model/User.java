@@ -46,4 +46,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orderList = new ArrayList<>();
+
+    /*연관관계 설정 메서드*/
+    public void addReview(Review review) {
+        this.reviewList.add(review);
+    }
 }

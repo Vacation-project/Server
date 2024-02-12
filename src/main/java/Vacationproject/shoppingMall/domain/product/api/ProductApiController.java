@@ -58,7 +58,7 @@ public class ProductApiController {
             @Parameter(name = PRODUCT_ID, description = PRODUCT_ID_DESCRIPTION, in = ParameterIn.PATH) @PathVariable(name = PRODUCT_ID) final Long productId,
 //            @Parameter(name = "상품 페이징 정보", description = "전송하지 않아도 됩니다.") @PageableDefault(page = 0, size=4, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
             @RequestParam(name = "offset", defaultValue = "0") int offset,
-            @RequestParam(name = "limit", defaultValue = "4") int limit
+            @RequestParam(name = "limit", defaultValue = "5") int limit
     ) {
         final ProductDetailResponse productDetailResponse = productService.getProductWithReviewAndRelationProducts(offset, limit, productId);
         return success(productDetailResponse);

@@ -29,7 +29,7 @@ public enum ErrorCode {
      * User
      */
     NICKNAME_DUPLICATION(409, "U001", "중복되는 닉네임입니다."),
-    NOT_FOUND_USER(404, "U002", "존재하지 않는 회원입니다."),
+    USER_NOT_FOUND(404, "U002", "존재하지 않는 회원입니다."),
     INVALID_INPUT_ID_PASSWORD(400, "U003", "Id 또는 Password가 일치하지 않습니다."),
 
     /**
@@ -39,6 +39,8 @@ public enum ErrorCode {
     /**
      * OrderProduct
      */
+    ORDER_PRODUCT_NOT_FOUND(400, "OP001", "존재하지 않는 주문 상품입니다."),
+
 
     /**
      * Product
@@ -53,6 +55,7 @@ public enum ErrorCode {
     /**
      * Review
      */
+    REVIEW_ALREADY_EXISTS(400, "R001", "이미 리뷰가 작성됐습니다."),
 
     /**
      * Favorite
@@ -64,13 +67,7 @@ public enum ErrorCode {
     CATEGORY_NAME_DUPLICATION(409, "CT001", "이미 존재하는 카테고리 이름입니다."),
     CATEGORY_NOT_FOUND(400, "CT002", "존재하지 않는 카테고리입니다.");
 
-    //Login, Join
 
-    //Member
-
-    //Board
-
-    //Comment
 
     private final String code;
     private final String message;

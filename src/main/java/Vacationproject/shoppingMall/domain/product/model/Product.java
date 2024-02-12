@@ -39,7 +39,7 @@ public class Product extends BaseEntity {
     private int price; // double이었으나, int로 수정
 
     @NotNull
-    @Min(value = PRODUCT_QUANTITY_MIN_SIZE)
+    @Min(value = PRODUCT_QUANTITY_MIN)
     private int stockQuantity; // 상품 재고수량
 
     @NotNull
@@ -80,6 +80,9 @@ public class Product extends BaseEntity {
     }
     public void addProductImages(List<ProductImage> productImages) {
         productImageList.addAll(productImages);
+    }
+    public void addReview(Review review) {
+        this.reviewList.add(review);
     }
 
     /* Using Method */

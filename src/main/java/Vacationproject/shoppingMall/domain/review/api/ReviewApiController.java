@@ -4,6 +4,7 @@ import Vacationproject.shoppingMall.common.constant.SwaggerConstants;
 import Vacationproject.shoppingMall.common.dto.ApiResponse;
 import Vacationproject.shoppingMall.domain.review.dto.ReviewDto;
 import Vacationproject.shoppingMall.domain.review.service.ReviewService;
+import Vacationproject.shoppingMall.domain.user.model.User;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -47,9 +48,13 @@ public class ReviewApiController {
         return success(orderProductReviewResponse);
     }
 
-    @PostMapping("/orderProductId")
-    public ApiResponse writeReview(@RequestBody @Valid ReviewRequest reviewRequest) {
+    @PostMapping("/{orderProductId}")
+    public ApiResponse writeReview(@PathVariable(name = ORDER_PRODUCT_Id) Long orderProductId,
+                                   @RequestBody @Valid ReviewRequest reviewRequest) {
         /* 회원 검증 추가 */
 
+        ReviewMassage reviewMassage = reviewService.writeReview(orderProductId, reviewRequest, User);
+
+        return success(reviewMassage);
     }
 }

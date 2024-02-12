@@ -27,7 +27,7 @@ public class OrderProduct extends BaseEntity {
 
     private int orderPrice;
 
-    private Boolean reviewCheck;
+    private Boolean reviewCheck = false;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "order_id") //FK
@@ -36,4 +36,9 @@ public class OrderProduct extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    /* 편의 메서드 */
+    public void reviewCheck() {
+        this.reviewCheck = true;
+    }
 }

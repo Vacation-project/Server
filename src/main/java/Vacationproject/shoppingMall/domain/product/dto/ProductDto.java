@@ -33,7 +33,7 @@ public class ProductDto {
             @Schema(description = PRODUCT_PRICE, nullable = false)
             int productPrice,
             @NotNull
-            @Min(value = PRODUCT_QUANTITY_MIN_SIZE)
+            @Min(value = PRODUCT_QUANTITY_MIN)
             @Schema(description = PRODUCT_STOCK_QUANTITY, nullable = false)
             int stockQuantity,
             @NotNull
@@ -63,7 +63,7 @@ public class ProductDto {
             @Schema(description = PRODUCT_PRICE, nullable = false)
             int productPrice,
             @NotNull
-            @Min(PRODUCT_QUANTITY_MIN_SIZE)
+            @Min(PRODUCT_QUANTITY_MIN)
             @Schema(description = PRODUCT_STOCK_QUANTITY, nullable = false)
             int stockQuantity,
             @NotNull
