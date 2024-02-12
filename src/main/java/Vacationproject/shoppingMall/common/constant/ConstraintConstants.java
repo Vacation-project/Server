@@ -51,5 +51,6 @@ public class ConstraintConstants {
      * OrderProduct
      */
     public static final String ORDER_PRODUCT_ID = "주문 상품 ID";
-    public static final String ORDER_PRODUCT_QUANTITY = "주문 상품 갯수";
+    public static final String ORDER_PRODUCT_QUANTITY = "주문 상품 갯주";
+    public static final String ORDER_PRODUCT_ORDER_DATE = "주문 상품 주문 시간";
 }

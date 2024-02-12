@@ -6,6 +6,7 @@ import Vacationproject.shoppingMall.domain.product.model.ProductImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static Vacationproject.shoppingMall.common.constant.ConstraintConstants.*;
@@ -28,6 +29,8 @@ public class OrderProductDto {
             int productPrice,
             @Schema(description = ORDER_PRODUCT_QUANTITY)
             int quantity,
+            @Schema(description = ORDER_PRODUCT_ORDER_DATE)
+            LocalDateTime orderDateTime,
             @Schema(description = PRODUCT_IMAGES)
             List<String> imageUrls
     ) {
@@ -37,6 +40,7 @@ public class OrderProductDto {
                     .productName(product.getName())
                     .productPrice(product.getPrice())
                     .quantity(orderProduct.getQuantity())
+                    .orderDateTime(orderProduct.getCreatedAt())
                     .imageUrls(product.getProductImageList().stream()
                             .map(ProductImage::getImageUrl).toList())
                     .build();
