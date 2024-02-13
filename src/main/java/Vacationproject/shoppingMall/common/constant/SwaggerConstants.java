@@ -109,6 +109,14 @@ public class SwaggerConstants {
     public static final String TAG_FAVORITE = "Favorite";
     public static final String TAG_FAVORITE_DESCRIPTION = "Favorite API";
 
+    /*Favorite Operation*/
+    public static final String GET_USER_FAVORITE_SUMMARY = "회원 좋아요 목록 조회";
+    public static final String GET_USER_FAVORITE_DESCRIPTION = "회원의 좋아요 목록 조회합니다.";
+    public static final String ADD_FAVORITE_SUMMARY = "좋아요 추가";
+    public static final String ADD_FAVORITE_DESCRIPTION = "회원이 상품을 좋아요 목록에 추가합니다.";
+
+    /*Favorite Parameter*/
+
     /**
      * OrderProduct
      */

@@ -17,6 +17,7 @@ public class FavoriteApiController {
     private final FavoriteService favoriteService;
 
 //    @GetMapping
+//    @Operation(summary = GET_USER_FAVORITE_SUMMARY, description = GET_USER_FAVORITE_DESCRIPTION)
 //    public ApiResponse<List<UserFavoriteProductResponse>> getUserFavorite(
 //            //@AuthenticationPrincipal PrincipalDetails principalDetails
 //    ) {
@@ -25,6 +26,7 @@ public class FavoriteApiController {
 //    }
 //
 //    @PostMapping
+//    @Operation(summary = ADD_FAVORITE_SUMMARY, description = ADD_FAVORITE_DESCRIPTION)
 //    public ApiResponse<FavoriteMessage> addFavorite(
 //            //@AuthenticationPrincipal PrincipalDetails principalDetails
 //            @RequestParam(name = PRODUCT_ID, defaultValue = PRODUCT_ID_DESCRIPTION) Long productId
