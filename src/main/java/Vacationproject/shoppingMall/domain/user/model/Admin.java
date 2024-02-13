@@ -28,7 +28,7 @@ public class Admin extends BaseEntity {
     private String token;
     private String loginId;
 
-    private String password;
+    @NotNull private String password;
 
     private String nickName;
 
