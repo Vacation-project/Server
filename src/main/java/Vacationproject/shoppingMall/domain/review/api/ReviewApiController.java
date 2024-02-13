@@ -91,4 +91,15 @@ public class ReviewApiController {
 
         return success(reviewMassage);
     }
+
+    @DeleteMapping("/{reviewId}")
+    public ApiResponse<ReviewMassage> deleteReview(
+            @PathVariable(name = REVIEW_ID) Long reviewId
+    ) {
+        /*회원 검증 + 해당 리뷰를 작성한 회원이 맞는지(컨트롤러에서? 서비스에서?*/
+
+        ReviewMassage reviewMassage = reviewService.deleteReview(reviewId);
+
+        return success(reviewMassage);
+    }
 }

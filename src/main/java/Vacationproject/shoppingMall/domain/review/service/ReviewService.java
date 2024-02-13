@@ -75,6 +75,7 @@ public class ReviewService {
         return UpdateReviewFormResponse.of(review);
     }
 
+    @Transactional
     public ReviewMassage updateReview(Long reviewId, UpdateReviewRequest updateReviewRequest) {
         Review review = getReview(reviewId);
         /* Dirty Checking */
@@ -87,9 +88,19 @@ public class ReviewService {
         return new ReviewMassage(true);
     }
 
+    @Transactional
+    public ReviewMassage deleteReview(Long reviewId) {
+        Review review = getReview(reviewId);
+        /*회원이 작성한 리뷰가 맞는지 검증?*/
+        reviewRepository.delete(review);
+
+        return new ReviewMassage(true);
+    }
+
     private static void reviewExistsCheck(OrderProduct orderProduct) {
         if (!orderProduct.getReviewCheck()) {
             throw new ReviewException(REVIEW_ALREADY_EXISTS);
         }
     }
+
 }
