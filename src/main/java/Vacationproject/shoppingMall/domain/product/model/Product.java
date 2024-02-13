@@ -56,7 +56,7 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval=true) // 상품이 삭제돠면 리뷰들도 삭제
     private List<Review> reviewList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval=true)
     private List<Favorite> favoriteList = new ArrayList<>();
 
     private int favoriteCount;

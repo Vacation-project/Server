@@ -41,10 +41,10 @@ public class User extends BaseEntity {
     @OneToOne
     private Cart cart; //TODO
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) // 회원이 삭제되면 리뷰들도 삭제되어야 하기 때문에 양방향으로 설정
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // 회원이 삭제되면 리뷰들도 삭제되어야 하기 때문에 양방향으로 설정
     private List<Review> reviewList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orderList = new ArrayList<>();
 
     /*연관관계 설정 메서드*/
