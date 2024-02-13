@@ -1,6 +1,7 @@
 package Vacationproject.shoppingMall.domain.orderProduct.repository;
 
 import Vacationproject.shoppingMall.domain.orderProduct.model.OrderProduct;
+import Vacationproject.shoppingMall.domain.review.model.Review;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,20 @@ public class OrderProductQueryRepository {
                                 "join fetch op.order o " +  // 여기서의 join fetch는 필요하지 않습니다.
                                 "join fetch o.user u " +   // 없어도 됨
                                 "where op.reviewCheck = false and u.id = :userId", OrderProduct.class)
+                .setParameter("userId", userId)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    /*회원이 작성한 리뷰 조회*/
+    public List<Review> findUserReviewOrderProducts(Long userId, int offset, int limit) {
+        return em.createQuery(
+                        "select r from Review r " +
+                                "join fetch r.user u " +
+                                "join fetch r.product p " +
+                                "join fetch p.productImageList pi " +
+                                "where u.id = :userId", Review.class)
                 .setParameter("userId", userId)
                 .setFirstResult(offset)
                 .setMaxResults(limit)

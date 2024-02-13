@@ -8,6 +8,11 @@ public class ConstraintConstants {
     public static final String TIME_FORMAT_YYYY_MM_DD_HH = "yyyy-MM-dd HH";
     public static final String TIME_FORMAT_YYYY_MM_DD = "yyyy-MM-dd";
 
+    /**
+     * User
+     */
+    public static final String USER_NICK_NAME = "유저 닉네임";
+
 
     /**
      * Product

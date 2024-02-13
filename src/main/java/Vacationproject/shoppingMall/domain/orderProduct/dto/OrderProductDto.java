@@ -3,6 +3,7 @@ package Vacationproject.shoppingMall.domain.orderProduct.dto;
 import Vacationproject.shoppingMall.domain.orderProduct.model.OrderProduct;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.product.model.ProductImage;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -30,6 +31,7 @@ public class OrderProductDto {
             @Schema(description = ORDER_PRODUCT_QUANTITY)
             int quantity,
             @Schema(description = ORDER_PRODUCT_ORDER_DATE)
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT_YYYY_MM_DD)
             LocalDateTime orderDateTime,
             @Schema(description = PRODUCT_IMAGES)
             List<String> imageUrls
