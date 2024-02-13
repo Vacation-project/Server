@@ -2,8 +2,10 @@ package Vacationproject.shoppingMall.domain.review.api;
 
 import Vacationproject.shoppingMall.common.constant.SwaggerConstants;
 import Vacationproject.shoppingMall.common.dto.ApiResponse;
+import Vacationproject.shoppingMall.domain.review.dto.ReviewDto;
 import Vacationproject.shoppingMall.domain.review.service.ReviewService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,7 @@ import static Vacationproject.shoppingMall.common.constant.SwaggerConstants.TAG_
 import static Vacationproject.shoppingMall.common.dto.ApiResponse.success;
 import static Vacationproject.shoppingMall.domain.orderProduct.dto.OrderProductDto.NotWrittenReviewOrderProduct;
 import static Vacationproject.shoppingMall.domain.orderProduct.dto.OrderProductDto.OrderProductReviewResponse;
+import static Vacationproject.shoppingMall.domain.review.dto.ReviewDto.*;
 import static Vacationproject.shoppingMall.domain.review.dto.ReviewDto.UserReviewResponse;
 
 @RestController
@@ -45,15 +48,15 @@ public class ReviewApiController {
         return success(orderProductReviewResponse);
     }
 
-//    @PostMapping("/{orderProductId}")
-//    public ApiResponse<ReviewMassage> writeReview(@PathVariable(name = ORDER_PRODUCT_Id) Long orderProductId,
-//                                   @RequestBody @Valid ReviewDto.WriteReviewRequest writeReviewRequest) {
-//        /* 회원 검증 추가 */
-//
-//        ReviewMassage reviewMassage = reviewService.writeReview(orderProductId, writeReviewRequest, User);
-//
-//        return success(reviewMassage);
-//    }
+    @PostMapping("/{orderProductId}")
+    public ApiResponse<ReviewMassage> writeReview(@PathVariable(name = ORDER_PRODUCT_Id) Long orderProductId,
+                                                  @RequestBody @Valid WriteReviewRequest writeReviewRequest) {
+        /* 회원 검증 추가 */
+
+        ReviewMassage reviewMassage = reviewService.writeReview(orderProductId, writeReviewRequest, User);
+
+        return success(reviewMassage);
+    }
 
     @GetMapping("/user/written")
     public ApiResponse<List<UserReviewResponse>> writtenReview(
@@ -66,4 +69,5 @@ public class ReviewApiController {
         return success(userReviewResponses);
     }
 
+    @GetMapping("/")
 }

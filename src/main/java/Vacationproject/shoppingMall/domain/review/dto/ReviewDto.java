@@ -72,6 +72,8 @@ public class ReviewDto {
 
     @Builder
     public record UserReviewResponse(
+            @Schema(description = PRODUCT_ID)
+            Long productId,
             @Schema(description = USER_NICK_NAME)
             String userNickName,
             @Schema(description = REVIEW_TITLE)
@@ -88,6 +90,7 @@ public class ReviewDto {
     ) {
         public static UserReviewResponse of(Review review) {
             return UserReviewResponse.builder()
+                    .productId(review.getProduct().getId())
                     .userNickName(review.getUser().getNickName())
                     .reviewTitle(review.getTitle())
                     .reviewComment(review.getComment())
