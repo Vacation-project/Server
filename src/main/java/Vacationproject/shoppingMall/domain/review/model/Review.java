@@ -50,4 +50,10 @@ public class Review extends BaseEntity {
         this.product = product;
         this.user = user;
     }
+
+    public void update(String title, String comment, int rating) {
+        this.title = title;
+        this.comment = comment;
+        this.rating = rating;
+    }
 }

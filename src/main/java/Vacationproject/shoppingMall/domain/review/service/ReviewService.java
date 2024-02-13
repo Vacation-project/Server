@@ -33,11 +33,17 @@ public class ReviewService {
     }
 
     /* 리뷰가 작성되지 않은 주문 상품 정보 가져오기 */
-    public List<NotWrittenReviewOrderProduct> notWrittenReviews(Long userId, int offset, int limit) {
+    public List<NotWrittenReviewOrderProduct> getNotWrittenReviews(Long userId, int offset, int limit) {
         List<OrderProduct> orderProducts = orderProductQueryRepository.findNotWrittenReviewOrderProducts(userId, offset, limit);
 
         return orderProducts
                 .stream().map(it -> NotWrittenReviewOrderProduct.of(it, it.getProduct())).toList();
+    }
+
+    public List<UserReviewResponse> getWrittenReview(long userId, int offset, int limit) {
+        List<Review> userReviewOrderProducts = orderProductQueryRepository.findUserReviewOrderProducts(userId, offset, limit);
+
+        return userReviewOrderProducts.stream().map(UserReviewResponse::of).toList();
     }
 
     public OrderProductReviewResponse getOrderProductName(Long orderProductId) {
@@ -69,10 +75,16 @@ public class ReviewService {
         return UpdateReviewFormResponse.of(review);
     }
 
-    public List<UserReviewResponse> getWrittenReview(long userId, int offset, int limit) {
-        List<Review> userReviewOrderProducts = orderProductQueryRepository.findUserReviewOrderProducts(userId, offset, limit);
+    public ReviewMassage updateReview(Long reviewId, UpdateReviewRequest updateReviewRequest) {
+        Review review = getReview(reviewId);
+        /* Dirty Checking */
+        review.update(
+                updateReviewRequest.reviewTitle(),
+                updateReviewRequest.reviewComment(),
+                updateReviewRequest.reviewRating()
+        );
 
-        return userReviewOrderProducts.stream().map(UserReviewResponse::of).toList();
+        return new ReviewMassage(true);
     }
 
     private static void reviewExistsCheck(OrderProduct orderProduct) {

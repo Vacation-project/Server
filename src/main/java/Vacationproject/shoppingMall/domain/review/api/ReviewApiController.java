@@ -34,7 +34,7 @@ public class ReviewApiController {
     ) {
         /* 회원 검증 추가 */
 
-        List<NotWrittenReviewOrderProduct> notWrittenReviewOrderProducts = reviewService.notWrittenReviews(1L, offset, limit);
+        List<NotWrittenReviewOrderProduct> notWrittenReviewOrderProducts = reviewService.getNotWrittenReviews(1L, offset, limit);
         return success(notWrittenReviewOrderProducts);
     }
 
@@ -81,7 +81,14 @@ public class ReviewApiController {
     }
 
     @PutMapping("/update/{reviewId}")
-    public ApiResponse updateReview(
-            @RequestBody @Valid
-    )
+    public ApiResponse<ReviewMassage> updateReview(
+            @PathVariable(name = REVIEW_ID) Long reviewId,
+            @RequestBody @Valid UpdateReviewRequest updateReviewRequest
+    ) {
+        /* 회원 검증 */
+
+        ReviewMassage reviewMassage = reviewService.updateReview(reviewId, updateReviewRequest);
+
+        return success(reviewMassage);
+    }
 }

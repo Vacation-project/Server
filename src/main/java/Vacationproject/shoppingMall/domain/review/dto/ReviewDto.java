@@ -41,7 +41,7 @@ public class ReviewDto {
     }
 
     @Builder
-    public record UpdateReviewFormRequest(
+    public record UpdateReviewRequest(
             @Schema(description = REVIEW_TITLE)
             @Size(min = REVIEW_TITLE_MIN_SIZE, max = REVIEW_TITLE_MAX_SIZE)
             String reviewTitle,
@@ -51,15 +51,6 @@ public class ReviewDto {
             @Schema(description = REVIEW_RATING)
             int reviewRating
     ) {
-        public Review toEntity(User user, Product product) {
-            return Review.builder()
-                    .user(user)
-                    .product(product)
-                    .title(reviewTitle)
-                    .comment(reviewComment)
-                    .rating(reviewRating)
-                    .build();
-        }
     }
 
     /**
