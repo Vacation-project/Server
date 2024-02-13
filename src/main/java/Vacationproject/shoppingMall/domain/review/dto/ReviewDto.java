@@ -20,10 +20,13 @@ public class ReviewDto {
      */
     @Builder
     public record WriteReviewRequest(
+            @Schema(description = REVIEW_TITLE)
             @Size(min = REVIEW_TITLE_MIN_SIZE, max = REVIEW_TITLE_MAX_SIZE)
             String reviewTitle,
+            @Schema(description = REVIEW_COMMENT)
             @Size(min = REVIEW_CONTENT_MIN_SIZE, max = REVIEW_CONTENT_MAX_SIZE)
-            String reviewContent,
+            String reviewComment,
+            @Schema(description = REVIEW_RATING)
             int reviewRating
     ) {
         public Review toEntity(User user, Product product) {
@@ -31,7 +34,29 @@ public class ReviewDto {
                     .user(user)
                     .product(product)
                     .title(reviewTitle)
-                    .comment(reviewContent)
+                    .comment(reviewComment)
+                    .rating(reviewRating)
+                    .build();
+        }
+    }
+
+    @Builder
+    public record UpdateReviewFormRequest(
+            @Schema(description = REVIEW_TITLE)
+            @Size(min = REVIEW_TITLE_MIN_SIZE, max = REVIEW_TITLE_MAX_SIZE)
+            String reviewTitle,
+            @Schema(description = REVIEW_COMMENT)
+            @Size(min = REVIEW_CONTENT_MIN_SIZE, max = REVIEW_CONTENT_MAX_SIZE)
+            String reviewComment,
+            @Schema(description = REVIEW_RATING)
+            int reviewRating
+    ) {
+        public Review toEntity(User user, Product product) {
+            return Review.builder()
+                    .user(user)
+                    .product(product)
+                    .title(reviewTitle)
+                    .comment(reviewComment)
                     .rating(reviewRating)
                     .build();
         }
@@ -101,5 +126,24 @@ public class ReviewDto {
             .build();
         }
     }
+
+    @Builder
+    public record UpdateReviewFormResponse(
+            @Schema(description = REVIEW_TITLE)
+            String reviewTitle,
+            @Schema(description = REVIEW_COMMENT)
+            String reviewComment,
+            @Schema(description = REVIEW_RATING)
+            int reviewRating
+    ) {
+        public static UpdateReviewFormResponse of(Review review) {
+            return UpdateReviewFormResponse.builder()
+                    .reviewTitle(review.getTitle())
+                    .reviewComment(review.getComment())
+                    .reviewRating(review.getRating())
+                    .build();
+        }
+    }
+
 }
 

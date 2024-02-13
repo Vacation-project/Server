@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.REVIEW_ALREADY_EXISTS;
+import static Vacationproject.shoppingMall.common.Error.exception.ErrorCode.REVIEW_NOT_FOUND;
 import static Vacationproject.shoppingMall.domain.orderProduct.dto.OrderProductDto.NotWrittenReviewOrderProduct;
 import static Vacationproject.shoppingMall.domain.orderProduct.dto.OrderProductDto.OrderProductReviewResponse;
 import static Vacationproject.shoppingMall.domain.review.dto.ReviewDto.*;
@@ -26,6 +27,10 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final OrderProductQueryRepository orderProductQueryRepository;
     private final OrderProductRepository orderProductRepository;
+
+    public Review getReview(Long reviewId) {
+        return reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewException(REVIEW_NOT_FOUND));
+    }
 
     /* 리뷰가 작성되지 않은 주문 상품 정보 가져오기 */
     public List<NotWrittenReviewOrderProduct> notWrittenReviews(Long userId, int offset, int limit) {
@@ -56,6 +61,12 @@ public class ReviewService {
         orderProduct.reviewCheck();
 
         return new ReviewMassage(true);
+    }
+
+    public UpdateReviewFormResponse getReviewUpdateForm(Long reviewId) {
+        Review review = getReview(reviewId);
+
+        return UpdateReviewFormResponse.of(review);
     }
 
     public List<UserReviewResponse> getWrittenReview(long userId, int offset, int limit) {

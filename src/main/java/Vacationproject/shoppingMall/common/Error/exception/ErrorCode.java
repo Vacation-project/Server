@@ -56,6 +56,7 @@ public enum ErrorCode {
      * Review
      */
     REVIEW_ALREADY_EXISTS(400, "R001", "이미 리뷰가 작성됐습니다."),
+    REVIEW_NOT_FOUND(400, "R002", "존재하지 않는 리뷰입니다."),
 
     /**
      * Favorite

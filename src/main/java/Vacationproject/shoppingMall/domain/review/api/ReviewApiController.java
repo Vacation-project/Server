@@ -2,7 +2,6 @@ package Vacationproject.shoppingMall.domain.review.api;
 
 import Vacationproject.shoppingMall.common.constant.SwaggerConstants;
 import Vacationproject.shoppingMall.common.dto.ApiResponse;
-import Vacationproject.shoppingMall.domain.review.dto.ReviewDto;
 import Vacationproject.shoppingMall.domain.review.service.ReviewService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -11,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static Vacationproject.shoppingMall.common.constant.SwaggerConstants.ORDER_PRODUCT_Id;
-import static Vacationproject.shoppingMall.common.constant.SwaggerConstants.TAG_REVIEW_DESCRIPTION;
+import static Vacationproject.shoppingMall.common.constant.SwaggerConstants.*;
 import static Vacationproject.shoppingMall.common.dto.ApiResponse.success;
 import static Vacationproject.shoppingMall.domain.orderProduct.dto.OrderProductDto.NotWrittenReviewOrderProduct;
 import static Vacationproject.shoppingMall.domain.orderProduct.dto.OrderProductDto.OrderProductReviewResponse;
@@ -64,10 +62,26 @@ public class ReviewApiController {
             @RequestParam(name = "offset", defaultValue = "0") int offset,
             @RequestParam(name = "limit", defaultValue = "9") int limit
     ) {
+        /* 회원 검증 */
+
         List<UserReviewResponse> userReviewResponses = reviewService.getWrittenReview(1L, offset, limit);
 
         return success(userReviewResponses);
     }
 
-    @GetMapping("/")
+    @GetMapping("/update/{reviewId}")
+    public ApiResponse<UpdateReviewFormResponse> updateReviewForm(
+            @PathVariable(name = REVIEW_ID) Long reviewId
+    ) {
+        /* 회원 검증 */
+
+        UpdateReviewFormResponse updateReviewFormResponse = reviewService.getReviewUpdateForm(reviewId);
+
+        return success(updateReviewFormResponse);
+    }
+
+    @PutMapping("/update/{reviewId}")
+    public ApiResponse updateReview(
+            @RequestBody @Valid
+    )
 }
