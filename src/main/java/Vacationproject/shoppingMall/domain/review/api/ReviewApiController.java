@@ -3,6 +3,7 @@ package Vacationproject.shoppingMall.domain.review.api;
 import Vacationproject.shoppingMall.common.constant.SwaggerConstants;
 import Vacationproject.shoppingMall.common.dto.ApiResponse;
 import Vacationproject.shoppingMall.domain.review.service.ReviewService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,28 @@ public class ReviewApiController {
 
     private final ReviewService reviewService;
 
+    @GetMapping("/{orderProductId}")
+    @Operation(summary = WRITE_REVIEW_FORM_SUMMARY, description = WRITE_REVIEW_FORM_DESCRIPTION)
+    public ApiResponse<OrderProductReviewResponse> writeReviewForm(@PathVariable(name = ORDER_PRODUCT_Id) Long orderProductId) {
+        /* 회원 검증 추가 */
+
+        OrderProductReviewResponse orderProductReviewResponse = reviewService.getOrderProductName(orderProductId);
+        return success(orderProductReviewResponse);
+    }
+
+//    @PostMapping("/{orderProductId}")
+//    @Operation(summary = WRITE_REVIEW_SUMMARY, description = WRITE_REVIEW_DESCRIPTION)
+//    public ApiResponse<ReviewMassage> writeReview(@PathVariable(name = ORDER_PRODUCT_Id) Long orderProductId,
+//                                                  @RequestBody @Valid WriteReviewRequest writeReviewRequest) {
+//        /* 회원 검증 추가 */
+//
+//        ReviewMassage reviewMassage = reviewService.writeReview(orderProductId, writeReviewRequest, User);
+//
+//        return success(reviewMassage);
+//    }
 
     @GetMapping("/user")
+    @Operation(summary = NOT_WRITTEN_REVIEW_SUMMARY, description = NOT_WRITTEN_REVIEW_DESCRIPTION)
     public ApiResponse<List<NotWrittenReviewOrderProduct>> notWrittenReviews(
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
             @RequestParam(name = "offset", defaultValue = "0") int offset,
@@ -38,25 +59,8 @@ public class ReviewApiController {
         return success(notWrittenReviewOrderProducts);
     }
 
-    @GetMapping("/{orderProductId}")
-    public ApiResponse<OrderProductReviewResponse> writeReviewForm(@PathVariable(name = ORDER_PRODUCT_Id) Long orderProductId) {
-        /* 회원 검증 추가 */
-
-        OrderProductReviewResponse orderProductReviewResponse = reviewService.getOrderProductName(orderProductId);
-        return success(orderProductReviewResponse);
-    }
-
-    @PostMapping("/{orderProductId}")
-    public ApiResponse<ReviewMassage> writeReview(@PathVariable(name = ORDER_PRODUCT_Id) Long orderProductId,
-                                                  @RequestBody @Valid WriteReviewRequest writeReviewRequest) {
-        /* 회원 검증 추가 */
-
-        ReviewMassage reviewMassage = reviewService.writeReview(orderProductId, writeReviewRequest, User);
-
-        return success(reviewMassage);
-    }
-
     @GetMapping("/user/written")
+    @Operation(summary = WRITTEN_REVIEW_SUMMARY, description = WRITTEN_REVIEW_DESCRIPTION)
     public ApiResponse<List<UserReviewResponse>> writtenReview(
             //            @AuthenticationPrincipal PrincipalDetails principalDetails
             @RequestParam(name = "offset", defaultValue = "0") int offset,
@@ -70,6 +74,7 @@ public class ReviewApiController {
     }
 
     @GetMapping("/update/{reviewId}")
+    @Operation(summary = UPDATE_REVIEW_FROM_SUMMARY, description = UPDATE_REVIEW_FROM_DESCRIPTION)
     public ApiResponse<UpdateReviewFormResponse> updateReviewForm(
             @PathVariable(name = REVIEW_ID) Long reviewId
     ) {
@@ -81,6 +86,7 @@ public class ReviewApiController {
     }
 
     @PutMapping("/update/{reviewId}")
+    @Operation(summary = UPDATE_REVIEW_SUMMARY, description = UPDATE_REVIEW_DESCRIPTION)
     public ApiResponse<ReviewMassage> updateReview(
             @PathVariable(name = REVIEW_ID) Long reviewId,
             @RequestBody @Valid UpdateReviewRequest updateReviewRequest
@@ -93,6 +99,7 @@ public class ReviewApiController {
     }
 
     @DeleteMapping("/{reviewId}")
+    @Operation(summary = DELETE_REVIEW_SUMMARY, description = DELETE_REVIEW_DESCRIPTION)
     public ApiResponse<ReviewMassage> deleteReview(
             @PathVariable(name = REVIEW_ID) Long reviewId
     ) {

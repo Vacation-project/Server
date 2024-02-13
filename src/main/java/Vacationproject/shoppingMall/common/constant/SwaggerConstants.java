@@ -85,6 +85,20 @@ public class SwaggerConstants {
     public static final String TAG_REVIEW_DESCRIPTION = "Review API";
 
     /*Review Operation*/
+    public static final String WRITE_REVIEW_FORM_SUMMARY = "리뷰 작성 폼";
+    public static final String WRITE_REVIEW_FORM_DESCRIPTION = "주문 상품의 리뷰를 작성하는 폼을 가져옵니다.";
+    public static final String WRITE_REVIEW_SUMMARY = "리뷰 작성";
+    public static final String WRITE_REVIEW_DESCRIPTION = "주문 상품의 리뷰를 작성합니다.";
+    public static final String NOT_WRITTEN_REVIEW_SUMMARY = "작성하지 않은 주문 상품 목록 조회";
+    public static final String NOT_WRITTEN_REVIEW_DESCRIPTION = "회원이 작성하지 않은 주문 상품 목록을 조회합니다.";
+    public static final String WRITTEN_REVIEW_SUMMARY = "작성한 리뷰 목록 조회";
+    public static final String WRITTEN_REVIEW_DESCRIPTION = "회원이 작성한 리뷰 목록을 조회합니다.";
+    public static final String UPDATE_REVIEW_FROM_SUMMARY = "리뷰 수정 폼";
+    public static final String UPDATE_REVIEW_FROM_DESCRIPTION = "수정할 리뷰 수정 폼을 가져옵니다.";
+    public static final String UPDATE_REVIEW_SUMMARY = "리뷰 수정";
+    public static final String UPDATE_REVIEW_DESCRIPTION = "리뷰를 수정합니다.";
+    public static final String DELETE_REVIEW_SUMMARY = "리뷰 수정";
+    public static final String DELETE_REVIEW_DESCRIPTION = "리뷰를 수정합니다.";
 
     /*Review Parameter*/
     public static final String REVIEW_ID = "reviewId";
