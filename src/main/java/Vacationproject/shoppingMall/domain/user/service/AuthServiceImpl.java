@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.service;
 
 import Vacationproject.shoppingMall.domain.user.dto.AuthDto;
@@ -15,9 +16,11 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 
+*/
 /**
  * Auth 서비스 구현체
- */
+ *//*
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -132,3 +135,4 @@ public class AuthServiceImpl implements AuthService {
         return !Objects.isNull(values);
     }
 }
+*/

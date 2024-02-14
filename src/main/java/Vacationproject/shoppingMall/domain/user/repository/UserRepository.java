@@ -17,6 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 
     boolean existsByNickname(String nickname);
+    boolean existsByLoginId(String loginId);
 
     List<User> findByLastLoginDateBetween(LocalDateTime startTime, LocalDateTime endTime);
 

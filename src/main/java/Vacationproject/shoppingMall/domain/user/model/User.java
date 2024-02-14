@@ -2,7 +2,6 @@ package Vacationproject.shoppingMall.domain.user.model;
 
 import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.cart.model.Cart;
-import Vacationproject.shoppingMall.domain.embeddable.Address;
 import Vacationproject.shoppingMall.domain.review.model.Review;
 import Vacationproject.shoppingMall.domain.user.dto.UserDto;
 import jakarta.persistence.*;
@@ -32,20 +31,26 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Enumerated(EnumType.STRING) private Role role; // 역할. Enum 타입
+    @Enumerated(EnumType.STRING)
+    private Role role; // 역할. Enum 타입
     private String email;
-    @NotNull private String password;
+    @NotNull
+    private String password;
 
     private String socialEmail;
 
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
-    @NotNull private String loginId;
-    @NotNull @Column(length = 20) private String nickname;
+    @NotNull
+    private String loginId;
+    @NotNull
+    @Column(length = 20)
+    private String nickname;
 
     private String gender;
 
-    @Embedded private Address address;
+    @Embedded
+    private Address address;
 
     @OneToOne(fetch = FetchType.LAZY)
     private Cart cart; //TODO
@@ -86,10 +91,11 @@ public class User extends BaseEntity {
     public void updateLastLoginDate() {
         this.lastLoginDate = LocalDateTime.now();
     }
+
     public void updateUserInfo(UserDto.UpdateUserInfoRequest updateUserInfoRequest) {
-          this.email = updateUserInfoRequest.email();
-          this.nickname = updateUserInfoRequest.nickname();
-      }
+        this.email = updateUserInfoRequest.email();
+        this.nickname = updateUserInfoRequest.nickname();
+    }
 
     public String getUsername() {
         // TODO: 구현
@@ -100,5 +106,10 @@ public class User extends BaseEntity {
 
         // TODO: 구현
         return null;
+    }
+
+    // 필드 값을 설정하는 메서드 추가
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

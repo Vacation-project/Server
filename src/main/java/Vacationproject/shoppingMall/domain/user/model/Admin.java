@@ -2,7 +2,6 @@ package Vacationproject.shoppingMall.domain.user.model;
 
 import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.cart.model.Cart;
-import Vacationproject.shoppingMall.domain.embeddable.Address;
 import Vacationproject.shoppingMall.domain.review.model.Review;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
