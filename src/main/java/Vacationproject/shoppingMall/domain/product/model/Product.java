@@ -39,7 +39,7 @@ public class Product extends BaseEntity {
     private int price; // double이었으나, int로 수정
 
     @NotNull
-    @Min(value = PRODUCT_QUANTITY_MIN_SIZE)
+    @Min(value = PRODUCT_QUANTITY_MIN)
     private int stockQuantity; // 상품 재고수량
 
     @NotNull
@@ -56,7 +56,7 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval=true) // 상품이 삭제돠면 리뷰들도 삭제
     private List<Review> reviewList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval=true)
     private List<Favorite> favoriteList = new ArrayList<>();
 
     private int favoriteCount;
@@ -80,6 +80,9 @@ public class Product extends BaseEntity {
     }
     public void addProductImages(List<ProductImage> productImages) {
         productImageList.addAll(productImages);
+    }
+    public void addReview(Review review) {
+        this.reviewList.add(review);
     }
 
     /* Using Method */

@@ -8,6 +8,11 @@ public class ConstraintConstants {
     public static final String TIME_FORMAT_YYYY_MM_DD_HH = "yyyy-MM-dd HH";
     public static final String TIME_FORMAT_YYYY_MM_DD = "yyyy-MM-dd";
 
+    /**
+     * User
+     */
+    public static final String USER_NICK_NAME = "유저 닉네임";
+
 
     /**
      * Product
@@ -29,7 +34,7 @@ public class ConstraintConstants {
     public static final String PRODUCT_CREATE_TIME = "상품 등록 시간";
 
     public static final int PRODUCT_PRICE_MIN = 100;
-    public static final int PRODUCT_QUANTITY_MIN_SIZE = 1;
+    public static final int PRODUCT_QUANTITY_MIN = 1;
     public static final int PRODUCT_CONTENT_MIN_SIZE = 10;
 
     /**
@@ -47,4 +52,15 @@ public class ConstraintConstants {
     public static final String REVIEW_CREATE_DATE = "리뷰 작성 시간";
     public static final String REVIEW_RATING = "리뷰 별점";
 
+    public static final int REVIEW_TITLE_MIN_SIZE = 5;
+    public static final int REVIEW_TITLE_MAX_SIZE = 30;
+    public static final int REVIEW_CONTENT_MIN_SIZE = 10;
+    public static final int REVIEW_CONTENT_MAX_SIZE = 200;
+
+    /**
+     * OrderProduct
+     */
+    public static final String ORDER_PRODUCT_ID = "주문 상품 ID";
+    public static final String ORDER_PRODUCT_QUANTITY = "주문 상품 갯주";
+    public static final String ORDER_PRODUCT_ORDER_DATE = "주문 상품 주문 시간";
 }

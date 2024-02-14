@@ -33,6 +33,7 @@ public class ProductApiController {
      * 상품 생성
      * TODO 회원 기능이 개발된다면 authService를 사용해서 현재 로그인 했는지, admin인지 검증 후 실행되도록 변경
      * 만약 로그인 X or Admin X인 경우 예외 발생
+     *
      */
     @PostMapping("/{categoryId}/admin")
     @Operation(summary = CREATE_PRODUCT_SUMMARY, description = CREATE_PRODUCT_DESCRIPTION)
@@ -57,7 +58,7 @@ public class ProductApiController {
             @Parameter(name = PRODUCT_ID, description = PRODUCT_ID_DESCRIPTION, in = ParameterIn.PATH) @PathVariable(name = PRODUCT_ID) final Long productId,
 //            @Parameter(name = "상품 페이징 정보", description = "전송하지 않아도 됩니다.") @PageableDefault(page = 0, size=4, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable
             @RequestParam(name = "offset", defaultValue = "0") int offset,
-            @RequestParam(name = "limit", defaultValue = "4") int limit
+            @RequestParam(name = "limit", defaultValue = "5") int limit
     ) {
         final ProductDetailResponse productDetailResponse = productService.getProductWithReviewAndRelationProducts(offset, limit, productId);
         return success(productDetailResponse);

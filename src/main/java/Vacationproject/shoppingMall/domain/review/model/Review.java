@@ -4,13 +4,13 @@ import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.user.model.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
-import static jakarta.persistence.FetchType.*;
+import static jakarta.persistence.FetchType.LAZY;
 
 /**
  * 상품후기
@@ -25,10 +25,13 @@ public class Review extends BaseEntity {
     @Column(name = "review_id")
     private Long id;
 
+    @NotNull
     private String title; // 제목
 
+    @NotNull
     private String comment; // 후기 내용
 
+    @NotNull
     private int rating; // 평점
 
     @ManyToOne(fetch = LAZY)
@@ -38,4 +41,19 @@ public class Review extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Builder
+    public Review(String title, String comment, int rating, Product product, User user) {
+        this.title = title;
+        this.comment = comment;
+        this.rating = rating;
+        this.product = product;
+        this.user = user;
+    }
+
+    public void update(String title, String comment, int rating) {
+        this.title = title;
+        this.comment = comment;
+        this.rating = rating;
+    }
 }

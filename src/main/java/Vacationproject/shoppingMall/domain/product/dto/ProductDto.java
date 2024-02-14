@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static Vacationproject.shoppingMall.common.constant.ConstraintConstants.*;
-import static Vacationproject.shoppingMall.domain.review.dto.ReviewDto.ReviewResponse;
+import static Vacationproject.shoppingMall.domain.review.dto.ReviewDto.ProductReviewResponse;
 
 
 public class ProductDto {
@@ -33,7 +33,7 @@ public class ProductDto {
             @Schema(description = PRODUCT_PRICE, nullable = false)
             int productPrice,
             @NotNull
-            @Min(value = PRODUCT_QUANTITY_MIN_SIZE)
+            @Min(value = PRODUCT_QUANTITY_MIN)
             @Schema(description = PRODUCT_STOCK_QUANTITY, nullable = false)
             int stockQuantity,
             @NotNull
@@ -63,7 +63,7 @@ public class ProductDto {
             @Schema(description = PRODUCT_PRICE, nullable = false)
             int productPrice,
             @NotNull
-            @Min(PRODUCT_QUANTITY_MIN_SIZE)
+            @Min(PRODUCT_QUANTITY_MIN)
             @Schema(description = PRODUCT_STOCK_QUANTITY, nullable = false)
             int stockQuantity,
             @NotNull
@@ -100,7 +100,7 @@ public class ProductDto {
             @Schema(description = PRODUCT_CONTENT)
             String productContent,
             @Schema(description = PRODUCT_IMAGES)
-            List<String> imageUrl
+            List<String> imageUrls
     ) {
         public static ProductUpdateResponse of(Product product) {
             return ProductUpdateResponse.builder()
@@ -108,7 +108,7 @@ public class ProductDto {
                     .productPrice(product.getPrice())
                     .stockQuantity(product.getStockQuantity())
                     .productContent(product.getContent())
-                    .imageUrl(product.getProductImageList().stream().map(ProductImage::getImageUrl).toList())
+                    .imageUrls(product.getProductImageList().stream().map(ProductImage::getImageUrl).toList())
                     .build();
         }
     }
@@ -132,7 +132,7 @@ public class ProductDto {
             @Schema(description = PRODUCT_IMAGES)
             List<String> imageUrls,
             @Schema(description = PRODUCT_REVIEWS)
-            List<ReviewResponse> reviewList,
+            List<ProductReviewResponse> reviewList,
             @Schema(description = PRODUCT_RELATION_PRODUCTS)
             List<RelationProduct> relationProductList
     ) {
@@ -145,7 +145,7 @@ public class ProductDto {
                     .productContent(product.getContent())
                     .categoryId(product.getCategory().getId())
                     .imageUrls(product.getProductImageList().stream().map(ProductImage::getImageUrl).toList())
-                    .reviewList(product.getReviewList().stream().map(ReviewResponse::of).toList())
+                    .reviewList(product.getReviewList().stream().map(ProductReviewResponse::of).toList())
                     .relationProductList(products.stream().map(RelationProduct::of).toList())
                     .build();
         }
@@ -218,6 +218,29 @@ public class ProductDto {
                     .build();
         }
     }
+
+    @Builder
+    public record UserFavoriteProductResponse(
+            @Schema(description = PRODUCT_ID)
+            Long productId,
+            @Schema(description = PRODUCT_NAME)
+            String productName,
+            @Schema(description = PRODUCT_PRICE)
+            int productPrice,
+            @Schema(description = PRODUCT_IMAGES)
+            List<String> imageUrls
+    ) {
+        public static UserFavoriteProductResponse of(Product product) {
+            return UserFavoriteProductResponse.builder()
+                    .productId(product.getId())
+                    .productName(product.getName())
+                    .productPrice(product.getPrice())
+                    .imageUrls(product.getProductImageList().stream()
+                            .map(ProductImage::getImageUrl).toList())
+                    .build();
+        }
+    }
+
 
     @Builder
     public record HomeProductResponse(
