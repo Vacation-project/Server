@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "users")
+@Table(name = "admin")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class Admin extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "") // TODO
+    @Column(name = "admin") // TODO
     private Long id;
 
     private String token;

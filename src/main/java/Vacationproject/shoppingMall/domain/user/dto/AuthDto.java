@@ -1,6 +1,5 @@
 package Vacationproject.shoppingMall.domain.user.dto;
 
-import Vacationproject.shoppingMall.common.exception.StatusCode;
 import Vacationproject.shoppingMall.domain.user.model.Role;
 import Vacationproject.shoppingMall.domain.user.model.SocialType;
 import Vacationproject.shoppingMall.domain.user.model.User;

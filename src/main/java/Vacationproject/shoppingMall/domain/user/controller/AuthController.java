@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.controller;
 
 import Vacationproject.shoppingMall.common.dto.ApiResponse;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static Vacationproject.shoppingMall.common.dto.ApiResponse.success;
 
+*/
 /**
  * 로그인 및 회원가입 요청 처리
- */
+ *//*
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -62,3 +65,4 @@ public class AuthController {
        }
 
 }
+*/
