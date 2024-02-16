@@ -113,4 +113,13 @@ public class UserDto {
         private String password;
 
     }
+
+    // 새로운 내부 클래스 추가
+    @Getter
+    public static class Response {
+        private Long id;
+        private String loginId;
+        private String nickname;
+
+    }
 }

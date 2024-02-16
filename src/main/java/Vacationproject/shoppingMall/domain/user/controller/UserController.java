@@ -18,11 +18,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    // 수정 회원가입완료 - 24.02.16
     @PostMapping("/users")
-    public ResponseEntity<ApiResponse<String>> registerUser(@RequestBody UserDto.RegisterRequest registerRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody UserDto.RegisterRequest registerRequest) {
         userService.registerUser(registerRequest);
         return ResponseEntity.ok(ApiResponse.success("회원가입 완료"));
     }
+
 
     @PostMapping("/auth/login")
     public ResponseEntity<ApiResponse<String>> loginUser(@RequestBody UserDto.LoginRequest loginRequest) {
@@ -44,10 +46,14 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success(message, isAvailable));
     }
 
+    // UserInfo 수정 24.02.16
+    // 
     @GetMapping("/users/{id}")
-    public ResponseEntity<ApiResponse<User>> getUserInfo(@PathVariable Long id) {
+    public ResponseEntity<?> getUserInfo(@PathVariable Long id) {
         User user = userService.getUserInfo(id);
-        return ResponseEntity.ok(ApiResponse.success(user));
+        UserDto.Response response = new UserDto.Response();
+        // User 엔티티에서 필요한 정보를 DTO로 복사
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @PutMapping("/users/{id}")

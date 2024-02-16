@@ -13,7 +13,7 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
-    // 성공 시 사용할 정적 팩토리 메서드
+    /*// 성공 시 사용할 정적 팩토리 메서드
     public static <T> Vacationproject.shoppingMall.domain.product.api.ApiResponse<T> success(T data) {
         return new Vacationproject.shoppingMall.domain.product.api.ApiResponse<>(true, "Operation Successful", data);
     }
@@ -25,20 +25,19 @@ public class ApiResponse<T> {
     // 에러 시 사용할 정적 팩토리 메서드
     public static Vacationproject.shoppingMall.domain.product.api.ApiResponse<?> error(String message) {
         return new Vacationproject.shoppingMall.domain.product.api.ApiResponse<>(false, message, null);
+    }*/
+
+    // ApiResponse 클래스의 정적 팩토리 메서드 수정
+    public static <T> ApiResponse<T> success(T data) {
+        return new ApiResponse<>(true, "Operation Successful", data);
     }
 
-    /**
-     * @Getter
-     */
-    public boolean isSuccess() {
-        return success;
+    public static <T> ApiResponse<T> success(String message, T data) {
+        return new ApiResponse<>(true, message, data);
     }
 
-    public String getMessage() {
-        return message;
-    }
+    public static ApiResponse<?> error(String message) {
+        return new ApiResponse<>(false, message, null);
 
-    public T getData() {
-        return data;
     }
 }
