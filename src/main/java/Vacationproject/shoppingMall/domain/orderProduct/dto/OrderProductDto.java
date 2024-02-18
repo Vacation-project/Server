@@ -54,12 +54,12 @@ public class OrderProductDto {
             @Schema(name = ORDER_PRODUCT_ID)
             Long orderProductId,
             @Schema(name = PRODUCT_NAME)
-            String orderProductName
+            String ProductName
     ) {
         public static OrderProductReviewResponse of(OrderProduct orderProduct) {
             return OrderProductReviewResponse.builder()
                     .orderProductId(orderProduct.getId())
-                    .orderProductName(orderProduct.getProduct().getName())
+                    .ProductName(orderProduct.getProduct().getName())
                     .build();
         }
     }

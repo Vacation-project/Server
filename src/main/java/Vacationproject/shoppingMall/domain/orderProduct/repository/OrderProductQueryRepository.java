@@ -21,7 +21,7 @@ public class OrderProductQueryRepository {
                                 "join fetch p.productImageList pi " +
                                 "join fetch op.order o " +  // 여기서의 join fetch는 필요하지 않습니다.
                                 "join fetch o.user u " +   // 없어도 됨
-                                "where op.reviewCheck = false and u.id = :userId", OrderProduct.class)
+                                "where u.id = :userId and op.reviewCheck = false ", OrderProduct.class)
                 .setParameter("userId", userId)
                 .setFirstResult(offset)
                 .setMaxResults(limit)

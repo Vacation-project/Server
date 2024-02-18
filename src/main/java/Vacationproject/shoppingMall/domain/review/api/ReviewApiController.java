@@ -28,7 +28,7 @@ public class ReviewApiController {
 
     @GetMapping("/{orderProductId}")
     @Operation(summary = WRITE_REVIEW_FORM_SUMMARY, description = WRITE_REVIEW_FORM_DESCRIPTION)
-    public ApiResponse<OrderProductReviewResponse> writeReviewForm(@PathVariable(name = ORDER_PRODUCT_Id) Long orderProductId) {
+    public ApiResponse<OrderProductReviewResponse> writeReviewForm(@PathVariable(name = ORDER_PRODUCT_Id) final Long orderProductId) {
         /* 회원 검증 추가 */
 
         OrderProductReviewResponse orderProductReviewResponse = reviewService.getOrderProductName(orderProductId);
@@ -55,7 +55,7 @@ public class ReviewApiController {
     ) {
         /* 회원 검증 추가 */
 
-        List<NotWrittenReviewOrderProduct> notWrittenReviewOrderProducts = reviewService.getNotWrittenReviews(1L, offset, limit);
+        List<NotWrittenReviewOrderProduct> notWrittenReviewOrderProducts = reviewService.getNotWrittenReviews(1L, offset, limit); // 1L은 유저의 ID
         return success(notWrittenReviewOrderProducts);
     }
 
@@ -63,8 +63,8 @@ public class ReviewApiController {
     @Operation(summary = WRITTEN_REVIEW_SUMMARY, description = WRITTEN_REVIEW_DESCRIPTION)
     public ApiResponse<List<UserReviewResponse>> writtenReview(
             //            @AuthenticationPrincipal PrincipalDetails principalDetails
-            @RequestParam(name = "offset", defaultValue = "0") int offset,
-            @RequestParam(name = "limit", defaultValue = "9") int limit
+            @RequestParam(name = "offset", defaultValue = "0") final int offset,
+            @RequestParam(name = "limit", defaultValue = "9") final int limit
     ) {
         /* 회원 검증 */
 
@@ -76,7 +76,7 @@ public class ReviewApiController {
     @GetMapping("/update/{reviewId}")
     @Operation(summary = UPDATE_REVIEW_FROM_SUMMARY, description = UPDATE_REVIEW_FROM_DESCRIPTION)
     public ApiResponse<UpdateReviewFormResponse> updateReviewForm(
-            @PathVariable(name = REVIEW_ID) Long reviewId
+            @PathVariable(name = REVIEW_ID) final Long reviewId
     ) {
         /* 회원 검증 */
 
@@ -88,8 +88,8 @@ public class ReviewApiController {
     @PutMapping("/update/{reviewId}")
     @Operation(summary = UPDATE_REVIEW_SUMMARY, description = UPDATE_REVIEW_DESCRIPTION)
     public ApiResponse<ReviewMassage> updateReview(
-            @PathVariable(name = REVIEW_ID) Long reviewId,
-            @RequestBody @Valid UpdateReviewRequest updateReviewRequest
+            @PathVariable(name = REVIEW_ID) final Long reviewId,
+            @RequestBody @Valid final UpdateReviewRequest updateReviewRequest
     ) {
         /* 회원 검증 */
 
@@ -103,7 +103,7 @@ public class ReviewApiController {
     public ApiResponse<ReviewMassage> deleteReview(
             @PathVariable(name = REVIEW_ID) Long reviewId
     ) {
-        /*회원 검증 + 해당 리뷰를 작성한 회원이 맞는지(컨트롤러에서? 서비스에서?*/
+        /* 회원 검증 + 해당 리뷰를 작성한 회원이 맞는지(컨트롤러에서? 서비스에서? -> userService에서 검증 */
 
         ReviewMassage reviewMassage = reviewService.deleteReview(reviewId);
 

@@ -36,8 +36,7 @@ public class ReviewService {
     public List<NotWrittenReviewOrderProduct> getNotWrittenReviews(Long userId, int offset, int limit) {
         List<OrderProduct> orderProducts = orderProductQueryRepository.findNotWrittenReviewOrderProducts(userId, offset, limit);
 
-        return orderProducts
-                .stream().map(it -> NotWrittenReviewOrderProduct.of(it, it.getProduct())).toList();
+        return orderProducts.stream().map(it -> NotWrittenReviewOrderProduct.of(it, it.getProduct())).toList();
     }
 
     public List<UserReviewResponse> getWrittenReview(long userId, int offset, int limit) {
@@ -91,7 +90,7 @@ public class ReviewService {
     @Transactional
     public ReviewMassage deleteReview(Long reviewId) {
         Review review = getReview(reviewId);
-        /*회원이 작성한 리뷰가 맞는지 검증?*/
+        /*회원이 작성한 리뷰가 맞는지 검증? -> UserService에서 검증하고 넘어오기 때문에 필요하지 않음*/
         reviewRepository.delete(review);
 
         return new ReviewMassage(true);
