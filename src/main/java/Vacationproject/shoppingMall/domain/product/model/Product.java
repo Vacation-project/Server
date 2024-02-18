@@ -94,7 +94,7 @@ public class Product extends BaseEntity {
         this.category = category;
     }
 
-    public void updateOnImage(UpdateProductRequest updateProductRequest, List<ProductImage> productImages,Category category) {
+    public void updateWithImage(UpdateProductRequest updateProductRequest, List<ProductImage> productImages, Category category) {
         this.name = updateProductRequest.productName();
         this.price = updateProductRequest.productPrice();
         this.stockQuantity = updateProductRequest.stockQuantity();

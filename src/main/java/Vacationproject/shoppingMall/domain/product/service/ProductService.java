@@ -77,27 +77,24 @@ public class ProductService {
     @Transactional
     public ProductMessage updateProduct(final Long productId, final UpdateProductRequest updateProduct, List<MultipartFile> images) throws IOException {
         Product product = getProduct(productId);
-        if (!product.getName().equals(updateProduct.productName())) {
-            nameDuplicationCheck(updateProduct.productName());
-        }
 
-        final Long categoryId = updateProduct.productCategoryId();
+        nameDuplicationCheck(updateProduct.productName());
 
-        updateProductInf(updateProduct, images, product, categoryService.getCategory(categoryId));
+        updateProductInf(updateProduct, images, product, categoryService.getCategory(updateProduct.productCategoryId()));
 
         return new ProductMessage(true);
     }
 
     private void updateProductInf(UpdateProductRequest updateProduct, List<MultipartFile> images, Product product, Category category) throws IOException {
-        if (images == null) {
+        if (images == null) { // 이미지는 업데이트 안 한 경우
             /*Dirty Checking*/
             product.update(
                     updateProduct,
                     category);
-        } else {
+        } else { // 이미지를 업데이트 한 경우
             final List<String> imageUrls = imageStore.storeFiles(images);
             /*Dirty Checking*/
-            product.updateOnImage(
+            product.updateWithImage(
                     updateProduct,
                     imageUrls.stream().map(it -> ProductImage.of(product, it)).toList(),
                     category);

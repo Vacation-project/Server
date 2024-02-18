@@ -13,7 +13,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByCategoryIdAndIdNot(Long categoryId, Long productId, Pageable pageable);
 
-    // 대소문자를 구분하지 않고 검색
+    // 대소문자를 구분하지 않고 검색, productImageList를 fetch join 해서 쿼리 최적화
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.productImageList WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Product> findByNameContainingIgnoreCase(@Param("keyword") String keyword, Pageable pageable);
 
