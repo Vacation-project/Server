@@ -77,6 +77,9 @@ public class SwaggerConstants {
     /*Category Parameter*/
     public static final String CATEGORY_ID = "categoryId";
     public static final String CATEGORY_ID_DESCRIPTION = "Category 의 ID";
+    public static final String CATEGORY_NAME = "categoryName";
+    public static final String CATEGORY_NAME_DESCRIPTION = "Category 의 Name";
+
 
     /**
      * Review

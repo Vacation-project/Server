@@ -24,7 +24,7 @@ public class CategoryApiController {
     @PostMapping
     @Operation(summary = CREATE_CATEGORY_SUMMARY, description = CREATE_CATEGORY_DESCRIPTION)
     public ApiResponse<String> createCategory(
-            @Parameter(name = "categoryName", description = "Category 의 Name") @RequestParam("categoryName") final String categoryName) {
+            @Parameter(name = CATEGORY_NAME, description = CATEGORY_NAME_DESCRIPTION) @RequestParam(CATEGORY_NAME) final String categoryName) {
 
         return success(categoryService.createCategory(categoryName));
     }
