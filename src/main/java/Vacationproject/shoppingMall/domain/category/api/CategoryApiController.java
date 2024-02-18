@@ -13,6 +13,7 @@ import java.util.List;
 import static Vacationproject.shoppingMall.common.constant.SwaggerConstants.*;
 import static Vacationproject.shoppingMall.common.dto.ApiResponse.success;
 import static Vacationproject.shoppingMall.domain.category.dto.CategoryDto.CategoryListResponse;
+import static Vacationproject.shoppingMall.domain.category.dto.CategoryDto.CategoryMessage;
 
 @RestController
 @RequestMapping("/api/category")
@@ -23,10 +24,11 @@ public class CategoryApiController {
 
     @PostMapping
     @Operation(summary = CREATE_CATEGORY_SUMMARY, description = CREATE_CATEGORY_DESCRIPTION)
-    public ApiResponse<String> createCategory(
+    public ApiResponse<CategoryMessage> createCategory(
             @Parameter(name = CATEGORY_NAME, description = CATEGORY_NAME_DESCRIPTION) @RequestParam(CATEGORY_NAME) final String categoryName) {
 
-        return success(categoryService.createCategory(categoryName));
+        CategoryMessage message = categoryService.createCategory(categoryName);
+        return success(message);
     }
 
     @GetMapping

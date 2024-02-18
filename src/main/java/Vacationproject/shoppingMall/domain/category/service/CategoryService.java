@@ -25,7 +25,7 @@ public class CategoryService {
                 orElseThrow(() -> new CategoryException(CATEGORY_NOT_FOUND));
     }
 
-    public String createCategory(String categoryName) {
+    public CategoryMessage createCategory(String categoryName) {
         nameDuplicationCheck(categoryName);
 
         Category category = Category.builder()
@@ -33,7 +33,7 @@ public class CategoryService {
                 .build();
         categoryRepository.save(category);
 
-        return categoryName;
+        return new CategoryMessage(true);
     }
 
     private void nameDuplicationCheck(String name) {

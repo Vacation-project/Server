@@ -9,6 +9,11 @@ import static Vacationproject.shoppingMall.common.constant.ConstraintConstants.C
 
 public class CategoryDto {
 
+    public record CategoryMessage(
+            boolean result
+    ) {
+    }
+
     @Builder
     public record CategoryListResponse(
             @Schema(description = CATEGORY_ID)
