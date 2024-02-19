@@ -12,4 +12,3 @@ public class UserException extends shopException {
         super(statusCode, message);
     }
 }
-
