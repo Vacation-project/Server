@@ -33,6 +33,12 @@ public class ReviewController {
         this.orderItemService = orderItemService;
     }
 
+    /*
+    해당 메서드에서 Could not autowire. No beans of 'OrderItemService' type found. 발생
+    ->  에러 메시지는 Spring이 OrderItemService 타입의 빈을 찾을 수 없다는 것을 의미한다.
+    OrderItemService 인터페이스나 구현 클래스에 @Service 어노테이션을 추가하여 Spring이 이를 빈으로 등록할 수 있도록 어노테이션 추가함.
+     */
+
     // 마이 페이지 - 리뷰 작성 가능한 주문 항목 조회
     @GetMapping("/user/review")
     public ResponseEntity<List<OrderItemDto>> getReviewableOrderItems() {
