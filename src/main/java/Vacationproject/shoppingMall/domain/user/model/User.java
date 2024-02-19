@@ -58,15 +58,20 @@ public class User extends BaseEntity {
     private LocalDateTime lastLoginDate;
     private String token;
 
-
-    @Builder.Default
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    // 회원이 삭제되면 리뷰들도 삭제되어야 하기 때문에 양방향으로 설정
-    private List<Review> reviewList = new ArrayList<>();
-
     /*public void setPassword(String encode) {
         this.password = encode;
     }*/
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)     // 회원이 삭제되면 리뷰들도 삭제되어야 하기 때문에 양방향으로 설정
+    private List<Review> reviewList = new ArrayList<>();
+
+    public void update(String nickname, Address address) {
+        this.nickname = nickname;
+        this.address = address;
+    }
+
+
     public void setPassword(String encode) {
         if (encode == null || encode.trim().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be null or empty");

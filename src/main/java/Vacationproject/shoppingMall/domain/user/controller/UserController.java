@@ -44,12 +44,20 @@ public class UserController {
         return ApiResponse.success(message, isAvailable);
     }
 
-    @GetMapping("/users/{id}")
+   /* @GetMapping("/users/{id}")
     public ApiResponse<UserDto.Response> getUserInfo(@PathVariable Long id) {
         User user = userService.getUserInfo(id);
         UserDto.Response response = new UserDto.Response(); // 실제로는 User 엔티티에서 DTO로 변환하는 로직 필요
         return ApiResponse.success("사용자 정보 조회 성공", response);
+    }*/
+
+    @GetMapping("/users/{id}")
+    public ApiResponse<UserDto.Response> getUserInfo(@PathVariable Long id) {
+        User user = userService.getUserInfo(id);
+        UserDto.Response response = new UserDto.Response(user.getId(), user.getLoginId(), user.getNickname());
+        return ApiResponse.success("사용자 정보 조회 성공", response);
     }
+
 
     @PutMapping("/users/{id}")
     public ApiResponse<String> updateUserInfo(@PathVariable Long id, @RequestBody UserDto.UpdateUserInfoRequest request) {
