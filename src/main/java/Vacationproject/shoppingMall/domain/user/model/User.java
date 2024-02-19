@@ -46,6 +46,10 @@ public class User extends BaseEntity {
     */
     @NotNull
     private String loginId;
+
+    @NotNull
+    private String username;
+
     @NotNull
     @Column(length = 20)
     private String nickname;
@@ -66,7 +70,8 @@ public class User extends BaseEntity {
     }*/
 
     @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)     // 회원이 삭제되면 리뷰들도 삭제되어야 하기 때문에 양방향으로 설정
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // 회원이 삭제되면 리뷰들도 삭제되어야 하기 때문에 양방향으로 설정
     private List<Review> reviewList = new ArrayList<>();
 
     public void update(String nickname, Address address) {
@@ -109,7 +114,7 @@ public class User extends BaseEntity {
         return this.nickname; // loginId 또는 email, nickname 중 적절한 것을 반환. -> Username이니까 닉네임 반환.
     }
 
-//    @Override
+    //    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(role.name())); // role은 Enum Type 임.

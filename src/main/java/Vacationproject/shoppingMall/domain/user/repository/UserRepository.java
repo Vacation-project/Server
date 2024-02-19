@@ -23,5 +23,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByLastLoginDateBefore(LocalDateTime beforeTime);
 
-    Optional<Object> findByUsername(String username);
+    Optional<Object> findByUsername(String userName);
 }
