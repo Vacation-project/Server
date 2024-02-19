@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -105,14 +106,14 @@ public class User extends BaseEntity {
     }
 
     public String getUsername() {
-        // TODO: 구현
-        return null;
+        return this.nickname; // loginId 또는 email, nickname 중 적절한 것을 반환. -> Username이니까 닉네임 반환.
     }
 
+//    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        // TODO: 구현
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.name())); // role은 Enum Type 임.
+        return authorities;
     }
 
     // 필드 값을 설정하는 메서드 추가

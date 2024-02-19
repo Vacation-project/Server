@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static Vacationproject.shoppingMall.common.constant.ConstraintConstants.*;
@@ -77,7 +78,7 @@ public class Product extends BaseEntity {
     }
 
     /* Using Method */
-    public void update(UpdateProductRequest updateProductRequest, List<ProductImage> productImages,Category category) {
+    public void update(UpdateProductRequest updateProductRequest, List<ProductImage> productImages, Category category) {
         this.name = updateProductRequest.productName();
         this.price = updateProductRequest.productPrice();
         this.stockQuantity = updateProductRequest.stockQuantity();
@@ -86,4 +87,17 @@ public class Product extends BaseEntity {
         this.productImageList.clear();
         this.productImageList.addAll(productImages);
     }
+
+    /*
+     리뷰 클래스에서 setProduct 메서드에서 발생하는 문제는 Product 클래스에
+     getReviews 메서드가 없거나, getReviews 메서드가 List<Review>
+     타입의 리뷰 목록을 올바르게 반환하지 않기 때문이라고 판단.
+     Product 클래스에 정의된 reviewList 필드에 접근할 수 있는 getter 메서드추가
+     즉, Err를 해결하려면,Product 클래스에는 이미 reviewList 필드와 관련된 List<Review> 타입을 반환하는
+     getter가 정의되어 있어야 하기 떄문에 추가해준다.
+     */
+    public List<Review> getReviews() {
+        return reviewList;
+    }
+
 }

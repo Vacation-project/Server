@@ -2,6 +2,7 @@ package Vacationproject.shoppingMall.domain.user.model;
 
 import Vacationproject.shoppingMall.common.model.BaseEntity;
 import Vacationproject.shoppingMall.domain.cart.model.Cart;
+import Vacationproject.shoppingMall.domain.product.model.Product;
 import Vacationproject.shoppingMall.domain.review.model.Review;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +11,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
 @Entity
@@ -21,32 +24,35 @@ public class Admin extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "admin") // TODO
+    @Column(name = "review_id")
     private Long id;
 
-    private String token;
-    private String loginId;
+    private String title; // 제목
+    private String comment; // 후기 내용
+    private int rating; // 평점
 
-    @NotNull private String password;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-    private String nickName;
+    // 사용자가 작성한 리뷰
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    private String gender;
+    // 관리자가 작성한 리뷰
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "admin_id") // 관리자와의 관계를 위한 JoinColumn 추가
+    private Admin admin;
 
-    @Embedded
-    private Address address;
+    // 관리자 설정 메서드
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
 
-    @Enumerated(EnumType.STRING)
-    private Role role; // 역할. Enum 타입
-
-    @OneToOne
-    private Cart cart; //TODO
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) // 회원이 삭제되면 리뷰들도 삭제되어야 하기 때문에 양방향으로 설정
-    private List<Review> reviewList = new ArrayList<>();
-
-    public void setPassword(String encode) {
-        this.password = password;
+    // 사용자 설정 메서드
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }
