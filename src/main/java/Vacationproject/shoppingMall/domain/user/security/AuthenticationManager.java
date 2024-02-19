@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.security;
 
 import org.springframework.security.core.Authentication;
@@ -7,3 +8,4 @@ public interface AuthenticationManager {
     Authentication authenticate(Authentication authentication)
        throws AuthenticationException;
 }
+*/

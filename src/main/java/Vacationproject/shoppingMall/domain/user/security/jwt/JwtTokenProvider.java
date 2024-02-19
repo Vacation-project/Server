@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.security.jwt;
 
 import Vacationproject.shoppingMall.domain.user.model.User;
@@ -21,9 +22,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+*/
 /**
  *  JWT 토큰 생성 및 검증
- */
+ *//*
+
 public class JwtTokenProvider {
     private final Key key;
 
@@ -119,3 +122,4 @@ public class JwtTokenProvider {
     }
 
 }
+*/

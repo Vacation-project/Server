@@ -62,5 +62,6 @@ public class UserServiceImpl implements UserService {
 
         Address userAddress = new Address(request.state(), request.city(), request.town());
         user.update(request.nickname(), userAddress);
+        // JPA의 Dirty Checking으로 인해 별도의 save() 호출이 필요 없음
     }
 }

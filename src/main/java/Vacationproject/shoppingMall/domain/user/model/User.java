@@ -39,8 +39,10 @@ public class User extends BaseEntity {
 
     private String socialEmail;
 
+    /*
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
+    */
     @NotNull
     private String loginId;
     @NotNull

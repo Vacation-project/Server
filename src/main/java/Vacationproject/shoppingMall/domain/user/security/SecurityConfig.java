@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.security;
 
 
@@ -53,3 +54,4 @@ public class SecurityConfig {
         return new JwtTokenFilter();
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.model;
 
 import lombok.Getter;
@@ -21,3 +22,4 @@ public enum SocialType {
         this.httpMethod = httpMethod;
     }
 }
+*/

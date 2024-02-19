@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.security;
 
 import org.springframework.security.core.Authentication;
@@ -10,3 +11,4 @@ public interface AuthenticationProvider {
 
 	boolean supports(Class<?> authentication);
 }
+*/

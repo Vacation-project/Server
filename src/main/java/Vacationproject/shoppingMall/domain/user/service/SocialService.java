@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
@@ -32,3 +33,4 @@ public class SocialService {
         return headers;
     }
 }
+*/

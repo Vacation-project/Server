@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.dto;
 
 import Vacationproject.shoppingMall.domain.user.model.Role;
@@ -145,3 +146,4 @@ public class AuthDto {
     }
 
 }
+*/

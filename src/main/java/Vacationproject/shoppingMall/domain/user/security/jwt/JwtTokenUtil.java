@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.security.jwt;
 
 import io.jsonwebtoken.Claims;
@@ -60,3 +61,4 @@ public class JwtTokenUtil {
     }
 }
 
+*/

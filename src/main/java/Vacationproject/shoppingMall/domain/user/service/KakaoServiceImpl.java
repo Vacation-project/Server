@@ -1,3 +1,4 @@
+/*
 package Vacationproject.shoppingMall.domain.user.service;
 
 import Vacationproject.shoppingMall.domain.user.dto.AuthDto;
@@ -57,3 +58,4 @@ public class KakaoServiceImpl implements KakaoService {
         return revokeStatusCode == 200;
     }
 }
+*/
