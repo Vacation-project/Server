@@ -132,7 +132,7 @@ public class ProductApiController {
             @Parameter(name = PRODUCT_ID, description = PRODUCT_ID_DESCRIPTION, in = ParameterIn.PATH) @PathVariable(name = PRODUCT_ID) final Long productId
 //            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
-        // authService.checkIsAdmin(principalDetails.getUser())
+        // authService.checkIsAdmin(principalDetails.getUser()) // 어드민이 맞는지 접근 권환 확인
         final ProductMessage message = productService.deleteProduct(productId);
 
         return success(message);
