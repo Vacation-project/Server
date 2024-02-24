@@ -71,7 +71,6 @@ public class Product extends BaseEntity {
         this.content = content;
         this.category = category;
     }
-
     /* 연관관계 메서드 */
     public void addProductImage(ProductImage productImage) {
         productImageList.add(productImage);

@@ -17,25 +17,25 @@
 ##    init:
 ##      mode: always
 ##
-##server:
-##  port: 8080
-##spring:
-##  datasource:
-##    url: jdbc:h2:tcp://localhost/~/authservice
-##    username: sa
-##    password:
-##    driver-class-name: org.h2.Driver
-##
-##  jpa:
-##    hibernate:
-##      ddl-auto: create
-##    properties:
-##      hibernate:
-##        format_sql: true
-##
-##  jwt:
-##    secret: 9f8ac09ef0137c73ee8b6d722d85c8ee56359b2e9a08976193dcd7aca5b6a91b
-##
+#server:
+#  port: 8080
+#spring:
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/authservice
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+#        format_sql: true
+#
+#  jwt:
+#    secret: 9f8ac09ef0137c73ee8b6d722d85c8ee56359b2e9a08976193dcd7aca5b6a91b
+#
 ##  security:
 ##    oauth2:
 ##      client:
@@ -97,7 +97,7 @@
 #            client-secret: 머시기
 #            scope:
 #            - email
-#            - public_profile
+#            - public_profileㄴ
 #
 #          # 네이버는 OAuth2.0 공식 지원대상이 아니라서 provider 설정이 필요하다.
 #          # 요청주소도 다르고, 응답 데이터도 다르기 때문이다.

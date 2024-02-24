@@ -11,12 +11,14 @@ import java.time.LocalDateTime;
 
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-@MappedSuperclass
+@MappedSuperclass // 어노테이션 검색해보기.
 public class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // 이걸 왜 쓰는지 ?
+    // -> Product에 있는 시간을 자동화를 위한 속성만 가지고 있기 때문에 사용 x
+    // 중복을 안하려고 쓴거-> (???)
 
     @LastModifiedDate
     protected LocalDateTime updateAt;
