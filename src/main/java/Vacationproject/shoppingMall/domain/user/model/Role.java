@@ -1,5 +1,11 @@
 package Vacationproject.shoppingMall.domain.user.model;
 
-public enum Role {
-    USER, ADMIN
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+public enum Role   {
+    USER, ADMIN;
+
 }
