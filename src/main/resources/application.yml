@@ -10,7 +10,9 @@ server:
 # DataBase Settings
 spring:
   datasource:
-    url: jdbc:h2:file:/Users/mun/Downloads/h2/bin/testShoppingMall;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
+    # jdbc:h2:./testshopping
+    # url: jdbc:h2:file:/Users/mun/Downloads/h2/bin/testShoppingMall;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
+    url: jdbc:h2:tcp://localhost/~/testshopping
     driver-class-name: org.h2.Driver
     username: sa # edit : 24.02.25
     password: 1234 # edit : 24.02.25
@@ -90,7 +92,7 @@ spring:
 # jwt.secret.key 값은 256 비트 이상이어야 함. feat : 24.02.25
 jwt:
   secret:
-    key: 856AE3855C1758616AAAB5B7E4AC2
+    key: t+Z5ssgwaaYIP2KFEahPZckIn+Ys51eCqAAKF5HIsdA
 
 # hibernate logging
 logging:

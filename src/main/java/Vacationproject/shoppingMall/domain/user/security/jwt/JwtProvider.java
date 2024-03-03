@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import java.util.List;
 // @Slf4j 로그 남길거면 사용
 public class JwtProvider {
 
-    @Value("${jwt.secret.key")
+    @Value("${jwt.secret.key}")
     private String salt;
 
     private Key secretKey;

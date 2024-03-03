@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SignController {
 
-    private final UserRepository memberRepository;
     private final SignService memberService;
 
     @PostMapping(value = "/login")
